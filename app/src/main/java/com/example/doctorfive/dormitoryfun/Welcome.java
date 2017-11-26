@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.telecom.Connection;
 
-import org.litepal.tablemanager.Connector;
+//import org.litepal.tablemanager.Connector;
 
 /**
  * Created by DoctorFive on 2017/10/12.
@@ -34,7 +34,7 @@ public class Welcome extends Activity {
             editor.commit();
         }else{
             //第二次进入跳转
-            Intent in=new Intent(Welcome.this,Login.class);
+            Intent in=new Intent(Welcome.this,Login_1.class);
             startActivity(in);
             finish();
             }

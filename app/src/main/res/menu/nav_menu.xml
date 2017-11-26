@@ -21,5 +21,13 @@
             android:id="@+id/nav_task"
             android:icon="@mipmap/niubi"
             android:title="Tasks"/>
+        <item
+            android:id="@+id/cancel"
+            android:icon="@mipmap/niubi"
+            android:title="Cancel"/>
+        <item
+            android:id="@+id/clear_data"
+            android:icon="@mipmap/niubi"
+            android:title="clear_data"/>
     </group>
 </menu>

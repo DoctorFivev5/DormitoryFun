@@ -2,7 +2,7 @@ package com.example.doctorfive.dormitoryfun;
 
 import android.widget.Toast;
 
-import org.litepal.crud.DataSupport;
+//import org.litepal.crud.DataSupport;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -11,7 +11,7 @@ import java.util.Calendar;
  * Created by DoctorFive on 2017/10/21.
  */
 
-public class Note extends DataSupport implements Serializable {
+public class Note  implements Serializable {
     private String text;
     private String calendar;
 

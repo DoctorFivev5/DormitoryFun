@@ -4,13 +4,20 @@
     android:layout_height="180dp"
     android:padding="10dp"
     android:background="?attr/colorPrimary">
-
-    <de.hdodenhof.circleimageview.CircleImageView
+    <!--<de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/icon_image"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/niubi"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"/>-->
+    <!--这个改成Glide框架-->
+    <ImageView
+        android:id="@+id/icon_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+
 
     <TextView
         android:id="@+id/username"

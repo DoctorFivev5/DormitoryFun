@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import org.litepal.LitePalApplication;
+//import org.litepal.LitePalApplication;
 
 import java.io.ByteArrayOutputStream;
 
@@ -19,7 +19,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context=getApplicationContext();
-        LitePalApplication.initialize(context);
+        //LitePalApplication.initialize(context);
     }
 
     public static Context getContext() {

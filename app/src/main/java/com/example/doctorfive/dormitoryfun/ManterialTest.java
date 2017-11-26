@@ -2,11 +2,14 @@ package com.example.doctorfive.dormitoryfun;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 
 import android.support.v4.view.MenuItemCompat;
@@ -25,9 +28,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
+
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -45,22 +52,73 @@ public class ManterialTest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manteriallayout);
+        final Intent intent = getIntent();
+        final Bundle bundle = intent.getExtras();
+
         Toolbar toolbar =(Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        ImageView icon =  (ImageView) findViewById(R.id.icon_image);
+        String map_url = "http://jwc.jxnu.edu.cn/StudentPhoto/"+bundle.getString("username")+".jpg?a=20171124191233";
+        Glide.with(this)
+                .load(map_url)
+                .placeholder(R.drawable.ic_launcher)
+                .override(70, 70)
+                .transform(new CircleCrop(this))
+                .into(icon);
+        //icon.setImageURI("http://jwc.jxnu.edu.cn/StudentPhoto/"+bundle.getString("username")+".jpg?a=20171124191233");
+        //http://jwc.jxnu.edu.cn/StudentPhoto/201626702119.jpg?a=20171124191233
+
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.mipmap.niubi);
         }
 
-        navigationView.setCheckedItem(R.id.nav_call);
+
+
+        /*
+        *Tab导航栏过时了
+        *
+        tab = actionBar
+                .newTab()
+                .setText("hehe")
+                .setTabListener(
+                        new TabListener<AlbumFragment>(this,"album",AlbumFragment.class)
+                );
+        actionBar.addTab(tab);*/
+
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                mDrawerLayout.closeDrawers();
+                SharedPreferences.Editor editor = getSharedPreferences("userPwd",MODE_PRIVATE).edit();
+                switch (item.getItemId()){
+                    case R.id.cancel:
+                        editor.putBoolean("clear",false);
+                        editor.apply();
+                        Intent in = new Intent(ManterialTest.this,Login_1.class);
+                        startActivity(in);
+                        finish();
+                        Toast.makeText(MyApplication.getContext(),"注销成功！",Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.clear_data:
+                        editor.putBoolean("clear",false);
+                        editor.putString("username","");
+                        editor.putString("password","");
+                        editor.apply();
+                        Intent in2 = new Intent(ManterialTest.this,Login_1.class);
+                        startActivity(in2);
+                        finish();
+                        Toast.makeText(MyApplication.getContext(),"本地账号清除成功！",Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        mDrawerLayout.closeDrawers();
+                }
+
                 return true;
             }
         });//选取任意一项就关闭侧边栏

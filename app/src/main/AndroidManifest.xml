@@ -11,9 +11,10 @@
         android:icon="@mipmap/niubi"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ManterialTest">
+        <activity android:name=".Welcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,10 +23,10 @@
         </activity>
         <activity android:name=".Register" />
         <activity android:name=".Go" />
-        <activity android:name=".Login" />
-        <activity android:name=".ForgetPwd" />
 
-        <activity android:name=".Welcome"></activity>
+        <activity android:name=".ForgetPwd" />
+        <activity android:name=".ManterialTest" />
+        <activity android:name=".Login_1"></activity>
     </application>
 
 </manifest>
