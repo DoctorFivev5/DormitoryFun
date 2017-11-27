@@ -30,4 +30,5 @@ public class MyApplication extends Application {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         return baos.toByteArray();
     }
+
 }

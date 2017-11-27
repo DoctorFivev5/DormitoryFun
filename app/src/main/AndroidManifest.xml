@@ -23,10 +23,10 @@
         </activity>
         <activity android:name=".Register" />
         <activity android:name=".Go" />
-
         <activity android:name=".ForgetPwd" />
         <activity android:name=".ManterialTest" />
-        <activity android:name=".Login_1"></activity>
+        <activity android:name=".Login_1" />
+        <activity android:name=".PersonalInformation"></activity>
     </application>
 
 </manifest>

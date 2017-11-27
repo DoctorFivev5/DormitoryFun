@@ -10,6 +10,8 @@ import android.graphics.Paint;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
+import java.security.MessageDigest;
+
 /**
  * Created by DoctorFive on 2017/11/24.
  */
@@ -27,7 +29,7 @@ public class CircleCrop extends BitmapTransformation {
     @Override
     protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
         int diameter = Math.min(toTransform.getWidth(), toTransform.getHeight());
-
+        //int diameter = toTransform.getWidth();
         final Bitmap toReuse = pool.get(outWidth, outHeight, Bitmap.Config.ARGB_8888);
         final Bitmap result;
         if (toReuse != null) {
@@ -36,8 +38,8 @@ public class CircleCrop extends BitmapTransformation {
             result = Bitmap.createBitmap(diameter, diameter, Bitmap.Config.ARGB_8888);
         }
 
-        int dx = (toTransform.getWidth() - diameter) / 2;
-        int dy = (toTransform.getHeight() - diameter) / 2;
+        int dx = (toTransform.getWidth() - diameter)/2;
+        int dy = (toTransform.getHeight() - diameter)/2;
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint();
         BitmapShader shader = new BitmapShader(toTransform, BitmapShader.TileMode.CLAMP,
@@ -52,7 +54,7 @@ public class CircleCrop extends BitmapTransformation {
         float radius = diameter / 2f;
         canvas.drawCircle(radius, radius, radius, paint);
 
-        if (toReuse != null && !pool.put(toReuse)) {
+        if (toReuse != null && !pool.put(toReuse) ) {//
             toReuse.recycle();
         }
         return result;
@@ -62,4 +64,5 @@ public class CircleCrop extends BitmapTransformation {
     public String getId() {
         return "com.example.doctorfive.CircleCrop";
     }
+
 }

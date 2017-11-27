@@ -21,53 +21,65 @@ public class Login_1 extends Activity {
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private DBHelper dbHelper;
-
+    private SQLiteDatabase db;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             //验证信息
+            setContentView(R.layout.login);
+            dbHelper = new DBHelper(this);
+            db = dbHelper.getDb();
             pref = getSharedPreferences("userPwd",MODE_PRIVATE);
             Boolean isClear = pref.getBoolean("clear",false);
             if (isClear){
-                String saveUsername = pref.getString("username","");
+                String savePhoneNum = pref.getString("phoneNum","");
                 String savePassword = pref.getString("password","");
-                login(saveUsername,savedInstanceState);
+                Cursor cursor1 = db.rawQuery("select phoneNum, password from Student where phoneNum=? and password=?", new String[]{savePhoneNum,savePassword});
+                if (cursor1.getCount()==0){
+                    Toast.makeText(MyApplication.getContext(),"本地验证已失效！请重新登录",Toast.LENGTH_SHORT).show();
+                }else{
+                    login(savePhoneNum,savedInstanceState);
+                }
+
             }
 
-            setContentView(R.layout.login);
-            dbHelper = new DBHelper(this);
+
+
             Button login = (Button) findViewById(R.id.login);
             Button register = (Button) findViewById(R.id.registerTo);
             Button findPassword = (Button) findViewById(R.id.forget_pwd);
-            final TextView username = (TextView) findViewById(R.id.username) ;
+            final TextView phoneNum = (TextView) findViewById(R.id.username) ;
             final TextView password = (TextView) findViewById(R.id.password) ;
 
             //Connector.getDatabase();
 
             //填入已保存的账号密码
-            String saveUsername = pref.getString("username","");
+            /*
+            这里出的密码bug*/
+            String saveUsername = pref.getString("phoneNum","");
             String savePassword = pref.getString("password","");
-            username.setText(saveUsername);
+            phoneNum.setText(saveUsername);
             password.setText(savePassword);
+
 
 
             login.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String  usernameS = username.getText().toString();
+                    String  phoneNumS = phoneNum.getText().toString();
                     String  passwordS = password.getText().toString();
-                    if (isMobileNO(usernameS)){
+                    if (isMobileNO(phoneNumS)){
 
                             //int usernameS = Integer.valueOf(usernameSS.trim());//抛出了numberformatexception异常
-                        SQLiteDatabase db = dbHelper.getDb();
+
                         //Cursor cursor = db.query("Student", "phoneNum", usernameS + "=userName", null,null,null,null);
                         //查询项必须是数组
-                        Cursor cursor = db.rawQuery("select phoneNum from Student where phoneNum='usernameS'", null);
+                        Cursor cursor = db.rawQuery("select phoneNum from Student where phoneNum=?", new String[]{phoneNumS});
 
                         if (cursor.getCount()==0){
                             Toast.makeText(MyApplication.getContext(),"该手机号没有注册",Toast.LENGTH_SHORT).show();
                         }else {
-                            Cursor cursor1 = db.rawQuery("select phoneNum, password from Student where phoneNum=usernameS and password=passwordS", null);
+                            Cursor cursor1 = db.rawQuery("select phoneNum, password from Student where phoneNum=? and password=?", new String[]{phoneNumS,passwordS});
                             if (cursor1.getCount()==0){
                                 Toast.makeText(MyApplication.getContext(),"密码错误",Toast.LENGTH_SHORT).show();
                             }else {
@@ -77,11 +89,11 @@ public class Login_1 extends Activity {
                                 //执行记住密码功能
                                 editor = pref.edit();
                                 editor.putBoolean("clear",true);
-                                editor.putString("username",usernameS);
+                                editor.putString("phoneNum",phoneNumS);
                                 editor.putString("password",passwordS);
                                 editor.apply();
                                 Toast.makeText(MyApplication.getContext(),"登陆成功！",Toast.LENGTH_SHORT).show();
-                                login(usernameS,savedInstanceState);
+                                login(phoneNumS,savedInstanceState);
                                 //传递账号信息进入用户界面
 
                             }
@@ -96,10 +108,10 @@ public class Login_1 extends Activity {
             register.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String usernameS = username.getText().toString();
+                    String phoneNumS = phoneNum.getText().toString();
                     Intent in=new Intent(MyApplication.getContext(),Register.class);
                     Bundle bundle = new Bundle();
-                    bundle.putCharSequence("username",usernameS);
+                    bundle.putCharSequence("phoneNum",phoneNumS);
                     in.putExtras(bundle);
                     startActivity(in,savedInstanceState);
 
@@ -109,10 +121,10 @@ public class Login_1 extends Activity {
             findPassword.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String usernameS = username.getText().toString();
+                    String phoneNumS = phoneNum.getText().toString();
                     Intent intent = new Intent(MyApplication.getContext(),ForgetPwd.class);
                     Bundle bundle = new Bundle();
-                    bundle.putCharSequence("username",usernameS);
+                    bundle.putCharSequence("phoneNum",phoneNumS);
                     intent.putExtras(bundle);
                     startActivity(intent,savedInstanceState);
                 }
@@ -123,12 +135,12 @@ public class Login_1 extends Activity {
 
         }
 
-    private void login(String usernameS,Bundle savedInstanceState) {
+    private void login(String phoneNum,Bundle savedInstanceState) {
         Intent in=new Intent(MyApplication.getContext(),ManterialTest.class);
         Bundle bundle = new Bundle();
-        bundle.putCharSequence("username",usernameS);
+        bundle.putCharSequence("phoneNum",phoneNum);
         in.putExtras(bundle);
-        startActivity(in,savedInstanceState);
+        startActivity(in);
         finish();
     }
 }

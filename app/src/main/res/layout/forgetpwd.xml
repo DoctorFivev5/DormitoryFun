@@ -53,7 +53,6 @@
             android:id="@+id/forget_stuNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
             android:minWidth="200dp"/>
     </LinearLayout>
 
@@ -74,7 +73,6 @@
             android:id="@+id/forget_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
             android:minWidth="200dp"/>
     </LinearLayout>
 
@@ -84,7 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center">
         <Button
-            android:id="@+id/register"
+            android:id="@+id/findPwd"
             android:text="找回密码"
             android:layout_width="300dp"
             android:layout_height="wrap_content" />

@@ -24,9 +24,9 @@ public class Student {
     private String email;//电子邮箱
     private String school;//学校
     private int state; //状态
-    private int dormitoryID;//房间号
+    private String  dormitoryID;//房间号
 
-    //对学号和手机号的类型进行了修改
+    //对学号和手机号和房间号的类型进行了修改
     //修改类型从int 改为 string
 
     public int getId() {
@@ -109,11 +109,11 @@ public class Student {
         this.state = state;
     }
 
-    public int getDormitoryID() {
+    public String getDormitoryID() {
         return dormitoryID;
     }
 
-    public void setDormitoryID(int dormitoryID) {
+    public void setDormitoryID(String dormitoryID) {
         this.dormitoryID = dormitoryID;
     }
 }

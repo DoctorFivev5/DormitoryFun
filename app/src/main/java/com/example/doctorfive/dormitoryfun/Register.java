@@ -56,11 +56,18 @@ public class Register extends AppCompatActivity {
                 password_2S = password_2.getText().toString();
                 if (Checkout.isMobileNO(phoneNumS)) {
                     /*
-                    try{
-                        int phoneNumS = Integer.valueOf(phoneNumSS);
-                        int stuNumS = Integer.valueOf(stuNumSS);
-                    }catch (Exception ex){
-                        Log.e("Login_1","输入的不是纯数字");
+                    try {
+                        phoneNumSS = Integer.parseInt(phoneNumS);
+                        stuNumSS = Integer.parseInt(stuNumS);
+                        passwordSS = Integer.parseInt(password_1S);
+                        Toast.makeText(MyApplication.getContext(),"没问题",Toast.LENGTH_SHORT).show();
+
+                    }catch (Exception e){
+                        phoneNumSS = 0;
+                        stuNumSS = 0;
+                        passwordSS = 0;
+                        Toast.makeText(MyApplication.getContext(),"有问题",Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
                     }
                     */
                     SQLiteDatabase db = dbHelper.getDb();
@@ -76,6 +83,15 @@ public class Register extends AppCompatActivity {
                             student.setPhoneNum(phoneNumS);
                             student.setStuNum(stuNumS);
                             student.setPassword(password_1S);
+                            /*
+                            student.setUsername("傻逼");
+                            student.setSex(true);
+                            student.setEmail("null");
+                            student.setSchool("null");
+                            student.setState(1);
+                            student.setName("null");
+                            student.setDormitoryID("0");
+                            */
                             dbHelper.insert(student);
 
 
@@ -85,7 +101,7 @@ public class Register extends AppCompatActivity {
                              */
 
 
-                            Toast.makeText(Register.this, "注册成功！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Register.this, "注册成功！"+phoneNumS+"  "+stuNumS+"  "+password_1S, Toast.LENGTH_SHORT).show();
                             /*
                             *进度条
                             ProgressDialog progressDialog = new ProgressDialog(MyApplication.getContext());

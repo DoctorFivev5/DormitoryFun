@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_call"
+            android:id="@+id/personal_information"
             android:icon="@mipmap/niubi"
-            android:title="Call"/>
+            android:title="个人信息"/>
         <item
             android:id="@+id/nav_friends"
             android:icon="@mipmap/niubi"

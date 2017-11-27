@@ -1,40 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nav_header_relarelativelayout"
     android:layout_width="match_parent"
     android:layout_height="180dp"
-    android:padding="10dp"
-    android:background="?attr/colorPrimary">
-    <!--<de.hdodenhof.circleimageview.CircleImageView
+
+   >
+    <ImageView
+        android:id="@+id/bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg1"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
+    />
+    <!--<de.hdodenhof.circleimageview.CircleImageView android:background="@drawable/bg1" android:padding="10dp"
+
         android:id="@+id/icon_image"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/niubi"
         android:layout_centerInParent="true"/>-->
+
+
     <!--这个改成Glide框架-->
     <ImageView
         android:id="@+id/icon_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
         />
 
 
 
     <TextView
-        android:id="@+id/username"
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="764460887@qq.com"
+        android:layout_above="@+id/signature"
+
         android:textColor="#FFF"
         android:textSize="14sp"/>
 
     <TextView
-        android:id="@+id/mail"
+        android:id="@+id/signature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/username"
-        android:text="axiba"
+        android:layout_alignParentBottom="true"
+
         android:textColor="#FFF"
         android:textSize="14sp"/>
+
 
 </RelativeLayout>

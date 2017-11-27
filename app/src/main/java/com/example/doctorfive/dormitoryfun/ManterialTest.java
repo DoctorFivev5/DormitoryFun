@@ -3,6 +3,10 @@ package com.example.doctorfive.dormitoryfun;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import android.provider.ContactsContract;
@@ -29,15 +33,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.example.doctorfive.dbhelp.DBHelper;
+import com.example.doctorfive.dbhelp.Student;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+
+
 
 public class ManterialTest extends AppCompatActivity {
 
@@ -47,6 +58,8 @@ public class ManterialTest extends AppCompatActivity {
     private NoteAdapter adapter;
     private ShareActionProvider mShareActionProvider;//系统自带ActionProvider--ShareActionProvider
     private MyActionProvider mMyActionProvider;//自定义MyActionProvider;
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,21 +67,35 @@ public class ManterialTest extends AppCompatActivity {
         setContentView(R.layout.manteriallayout);
         final Intent intent = getIntent();
         final Bundle bundle = intent.getExtras();
+        final Student student = new Student();
+        student.setPhoneNum(bundle.getString("phoneNum"));
+        dbHelper = new DBHelper(this);
+        db = dbHelper.getDb();
+        Cursor cursor = db.rawQuery("select * from Student where phoneNum=?", new String[]{student.getPhoneNum()});
+        dbHelper.export(cursor,student);
 
         Toolbar toolbar =(Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View headerView = navigationView.getHeaderView(0);
-        ImageView icon =  (ImageView) findViewById(R.id.icon_image);
-        String map_url = "http://jwc.jxnu.edu.cn/StudentPhoto/"+bundle.getString("username")+".jpg?a=20171124191233";
-        Glide.with(this)
-                .load(map_url)
-                .placeholder(R.drawable.ic_launcher)
-                .override(70, 70)
+        View headerView = navigationView.getHeaderView(0);//获取navigationView内的布局
+        RelativeLayout insertLayout = (RelativeLayout) headerView.findViewById(R.id.nav_header_relarelativelayout);
+        ImageView bg = (ImageView) headerView.findViewById(R.id.bg);
+        ImageView icon =  (ImageView) headerView.findViewById(R.id.icon_image);
+        TextView name = (TextView) headerView.findViewById(R.id.name);
+        name.setText(student.getName());
+        TextView stuNum = (TextView) headerView.findViewById(R.id.signature);
+        stuNum.setText(student.getStuNum());
+        //NavigationView获取Header View的问题
+        String map_url = "http://jwc.jxnu.edu.cn/StudentPhoto/"+student.getStuNum()+".jpg?a=20171124191233";
+        //Toast.makeText(MyApplication.getContext(),map_url,Toast.LENGTH_LONG).show();
+        Glide.with(this).load(map_url)
                 .transform(new CircleCrop(this))
                 .into(icon);
+        //.apply(bitmapTransform(new CropTransformation(50,50,)))
+        //.apply(bitmapTransform(new BlurTransformation(25)))
+        //.override(50, 50).placeholder(R.drawable.niubi)
         //icon.setImageURI("http://jwc.jxnu.edu.cn/StudentPhoto/"+bundle.getString("username")+".jpg?a=20171124191233");
         //http://jwc.jxnu.edu.cn/StudentPhoto/201626702119.jpg?a=20171124191233
 
@@ -82,6 +109,7 @@ public class ManterialTest extends AppCompatActivity {
 
         /*
         *Tab导航栏过时了
+        * 想加入一个4个fragment页面 进行切换
         *
         tab = actionBar
                 .newTab()
@@ -91,29 +119,44 @@ public class ManterialTest extends AppCompatActivity {
                 );
         actionBar.addTab(tab);*/
 
+        insertLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ManterialTest.this,PersonalInformation.class);
+                Bundle bundle = new Bundle();
+                bundle.putCharSequence("phoneNum",student.getPhoneNum());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 SharedPreferences.Editor editor = getSharedPreferences("userPwd",MODE_PRIVATE).edit();
                 switch (item.getItemId()){
+                    case R.id.personal_information:
+                        Intent in1 = new Intent(ManterialTest.this,PersonalInformation.class);
+                        startActivity(in1);
+                        break;
                     case R.id.cancel:
                         editor.putBoolean("clear",false);
                         editor.apply();
-                        Intent in = new Intent(ManterialTest.this,Login_1.class);
-                        startActivity(in);
+                        Intent in2 = new Intent(ManterialTest.this,Login_1.class);
+                        startActivity(in2);
                         finish();
                         Toast.makeText(MyApplication.getContext(),"注销成功！",Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.clear_data:
                         editor.putBoolean("clear",false);
-                        editor.putString("username","");
+                        editor.putString("phoneNum","");
                         editor.putString("password","");
                         editor.apply();
-                        Intent in2 = new Intent(ManterialTest.this,Login_1.class);
-                        startActivity(in2);
+                        Intent in3 = new Intent(ManterialTest.this,Login_1.class);
+                        startActivity(in3);
                         finish();
-                        Toast.makeText(MyApplication.getContext(),"本地账号清除成功！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyApplication.getContext(),"取消自动登录成功！",Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         mDrawerLayout.closeDrawers();
@@ -131,7 +174,8 @@ public class ManterialTest extends AppCompatActivity {
                 Toast.makeText(MyApplication.getContext(),"真牛逼！！！",Toast.LENGTH_SHORT).show();
             }
         });
-
+        /*
+        显示在主界面的一些东西*/
         initNotes();
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
