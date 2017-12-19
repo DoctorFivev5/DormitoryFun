@@ -24,21 +24,23 @@
                 app:layout_scrollFlags="scroll|enterAlways|snap"/><!--头部导航栏-->
         </android.support.design.widget.AppBarLayout>
 
+        <!--
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
-            android:src="@drawable/niubi"/>
+            android:src="@drawable/niubi"/>-->
+        <!--悬浮按钮-->
 
-
+        <!--
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/><!--一个比listview强大的布局-->
-
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>-->
+        <!--一个比listview强大的布局-->
 
 
     </android.support.design.widget.CoordinatorLayout><!--一个加强版的FrameLayout  可以监听其所有子控件的各种事件，然后做出最合理的响应-->

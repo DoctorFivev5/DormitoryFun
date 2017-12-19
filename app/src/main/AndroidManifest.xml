@@ -3,10 +3,10 @@
     package="com.example.doctorfive.dormitoryfun">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!-- android:name="org.litepal.LitePalApplication" -->
     <application
-        android:name=".MyApplication"
+        android:name="com.example.doctorfive.base.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/niubi"
         android:label="@string/app_name"
@@ -14,19 +14,29 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Welcome">
+        <activity android:name="com.example.doctorfive.ui.activity.CheckFirstOpen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Register" />
-        <activity android:name=".Go" />
-        <activity android:name=".ForgetPwd" />
-        <activity android:name=".ManterialTest" />
-        <activity android:name=".Login_1" />
-        <activity android:name=".PersonalInformation"></activity>
+        <activity android:name="com.example.doctorfive.ui.activity.RegisterActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.FirstOpen" />
+        <activity android:name="com.example.doctorfive.ui.activity.ForgetPwdActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.MainActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.LoginActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.PersonalInformation"></activity>
+        <activity android:name="com.example.doctorfive.ui.activity.KCBActivity"></activity>
+        <provider
+            android:authorities="com.example.doctorfive.dormitoryfun.fileprovider"
+            android:name="android.support.v4.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

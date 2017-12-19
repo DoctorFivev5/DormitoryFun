@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:minWidth="200dp"/>
     </LinearLayout>
-
+    <!--
     <LinearLayout
         android:id="@+id/register_l2"
         android:layout_width="match_parent"
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:minWidth="200dp"/>
     </LinearLayout>
-
+    -->
     <!--
     <LinearLayout
         android:id="@+id/register_l2"

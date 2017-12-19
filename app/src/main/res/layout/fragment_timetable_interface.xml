@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.doctorfive.dormitoryfun.com.example.doctorfive.fragment.TimetableInterface"><!---->
+
+    <EditText
+        android:id="@+id/stuNum1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="请输入用户名或者邮箱地址"/>
+
+    <EditText
+        android:id="@+id/stuPassword1"
+        android:inputType="textPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="请输入密码"/>
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="登录"/>\
+    <Button
+        android:id="@+id/kcb"
+        android:layout_width="wrap_content"
+        android:text="获取课程表"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/logon"
+        android:layout_width="wrap_content"
+        android:text="退出登录"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
