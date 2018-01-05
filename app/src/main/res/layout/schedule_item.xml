@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/schedule_item_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/skyblue">
+
+    <ImageView
+        android:id="@+id/schedulTypeImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+         />
+
+    <TextView
+        android:id="@+id/schedulTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/schedulTypeImage"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/schedulTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_alignBottom="@+id/schedulTypeImage"
+        android:layout_toEndOf="@+id/schedulTypeImage"
+        android:text="TextView" />
+
+    <ImageButton
+        android:id="@+id/schedulStateImage"
+        android:background="@color/skyblue"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+
+        android:layout_alignParentEnd="true"
+        />
+</RelativeLayout>

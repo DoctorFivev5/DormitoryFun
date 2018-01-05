@@ -3,7 +3,9 @@
     package="com.example.doctorfive.dormitoryfun">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <!-- android:name="org.litepal.LitePalApplication" -->
     <application
         android:name="com.example.doctorfive.base.MyApplication"
@@ -13,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/ImageTranslucentTheme">
         <activity android:name="com.example.doctorfive.ui.activity.CheckFirstOpen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,17 +28,21 @@
         <activity android:name="com.example.doctorfive.ui.activity.ForgetPwdActivity" />
         <activity android:name="com.example.doctorfive.ui.activity.MainActivity" />
         <activity android:name="com.example.doctorfive.ui.activity.LoginActivity" />
-        <activity android:name="com.example.doctorfive.ui.activity.PersonalInformation"></activity>
-        <activity android:name="com.example.doctorfive.ui.activity.KCBActivity"></activity>
+        <activity android:name="com.example.doctorfive.ui.activity.PersonalInformation" />
+        <activity android:name="com.example.doctorfive.ui.activity.KCBActivity" />
+
         <provider
-            android:authorities="com.example.doctorfive.dormitoryfun.fileprovider"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.doctorfive.dormitoryfun.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name="com.example.doctorfive.ui.activity.ScheduleActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.ScheduleDetailActivity"></activity>
     </application>
 
 </manifest>

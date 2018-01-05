@@ -16,7 +16,7 @@ import java.util.List;
 
 public class KCBActivity extends AppCompatActivity {
 
-    private Spinner spinner;
+    //private Spinner spinner;
 
     private GridView detailCource;
 
@@ -37,7 +37,7 @@ public class KCBActivity extends AppCompatActivity {
         setContentView(R.layout.kcblayout);
         Intent intent = getIntent();
         kcb = intent.getStringArrayExtra("kcb");
-        spinner = (Spinner)findViewById(R.id.switchWeek);
+        //spinner = (Spinner)findViewById(R.id.switchWeek);
         detailCource = (GridView)findViewById(R.id.courceDetail);
         //第二种方式创建Adapter 可操作性强
         fillStringArray();
@@ -52,7 +52,7 @@ public class KCBActivity extends AppCompatActivity {
         fillDataList();
         spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, dataList);//把周次填进布局中
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);//设置下拉布局
-        spinner.setAdapter(spinnerAdapter);//加载下拉布局
+        //spinner.setAdapter(spinnerAdapter);//加载下拉布局
     }
 
     /**

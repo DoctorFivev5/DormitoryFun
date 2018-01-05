@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+    <!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white">
         <TextView
-            android:id="@+id/year"
+            android:id="@+id/mySchedulTime"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_gravity="center"
@@ -26,7 +26,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="#00FFFF"
-            /><!--竖线-->
+            />竖线
 
         <Spinner
             android:id="@+id/switchWeek"
@@ -34,14 +34,15 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_gravity="center"
-            /><!--下拉方式选周数-->
-
-    </LinearLayout><!--显示时间-->
-
-    <View
+            />拉方式选周数
+<View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#00FF7F"/><!--分隔线-->
+        android:background="#00FF7F"/>分隔线
+    </LinearLayout>显示时间-->
+
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -69,43 +70,43 @@
                 android:gravity="center">
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="92dp"
+                    android:layout_height="90dp"
                     android:text="12"
                     android:textSize="10dp"
                     android:gravity="center"/>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="92dp"
+                    android:layout_height="90dp"
                     android:textSize="12dp"
                     android:text="3"
                     android:gravity="center"/>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="92dp"
+                    android:layout_height="90dp"
                     android:textSize="12dp"
                     android:text="4"
                     android:gravity="center"/>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="92dp"
+                    android:layout_height="90dp"
                     android:textSize="12dp"
                     android:text="5"
                     android:gravity="center"/>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="92dp"
+                    android:layout_height="90dp"
                     android:textSize="12dp"
                     android:text="67"
                     android:gravity="center"/>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="92dp"
+                    android:layout_height="90dp"
                     android:textSize="12dp"
                     android:text="89"
                     android:gravity="center"/>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="92dp"
+                    android:layout_height="85dp"
                     android:textSize="12dp"
                     android:text="晚上"
                     android:gravity="center"/>

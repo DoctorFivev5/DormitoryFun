@@ -30,8 +30,6 @@ public class MyInterface extends Fragment {
     public MyInterface() {
         // Required empty public constructor
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,6 +65,24 @@ public class MyInterface extends Fragment {
         optiontList.add(optionitem);
         optionitem = new Optionitem("校园资讯",R.drawable.my_selected);
         optiontList.add(optionitem);
+        optionitem = new Optionitem("校园资讯",R.drawable.my_selected);
+        optiontList.add(optionitem);
+        optionitem = new Optionitem("校园资讯",R.drawable.my_selected);
+        optiontList.add(optionitem);
+        optionitem = new Optionitem("校园资讯",R.drawable.my_selected);
+        optiontList.add(optionitem);
+        optionitem = new Optionitem("校园资讯",R.drawable.my_selected);
+        optiontList.add(optionitem);
+        optionitem = new Optionitem("校园资讯",R.drawable.my_selected);
+        optiontList.add(optionitem);
+        optionitem = new Optionitem("校园资讯",R.drawable.my_selected);
+        optiontList.add(optionitem);
+        optionitem = new Optionitem("校园资讯",R.drawable.my_selected);
+        optiontList.add(optionitem);
+        optionitem = new Optionitem("校园资讯",R.drawable.my_selected);
+        optiontList.add(optionitem);
+
+
     }
 
 }

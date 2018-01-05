@@ -66,7 +66,7 @@ public class WeekTitleView extends View {
                 Log.d("WeekTitle", ""+day);
             }
             canvas.drawText(days[i], currentPosition, 30, mPaint);
-            currentPosition += offset;
+            currentPosition = currentPosition+offset+i*3;
         }
         //调用父类的绘图方法
         super.onDraw(canvas);
