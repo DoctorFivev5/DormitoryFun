@@ -26,12 +26,14 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class KCBFragment extends Fragment {
+public class KCBFragment extends Fragment implements View.OnClickListener {
     private DBHelper dbHelper;
 
     //private Spinner spinner;
-
+    private TextView utilText;
+    private TextView team;
     private GridView detailCource;
+
 
     private String[][] contents;
 
@@ -58,9 +60,12 @@ public class KCBFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.kcblayout, container, false);
+        initView(view);
         dbHelper = new DBHelper(getActivity());
         if (isAdded()) {//判断Fragment已经依附Activity
             student = (Student) getArguments().getSerializable("student");
+            student = dbHelper.export(student);
+
             Log.e("KCBFragment",student.getStuNum()+" 000");
             timetable = dbHelper.export(student.getStuNum(),17182);
             Log.e("KCBFragment",timetable.getClass1()+" 000  "+timetable.getStuNum());
@@ -68,7 +73,7 @@ public class KCBFragment extends Fragment {
         }else {
             Log.e("KCBFragment","没有依赖");
         }
-
+        initData();
         //spinner = (Spinner) view.findViewById(R.id.switchWeek);
         detailCource = (GridView) view.findViewById(R.id.courceDetail);
         //第二种方式创建Adapter 可操作性强
@@ -86,6 +91,27 @@ public class KCBFragment extends Fragment {
         //spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);//设置下拉布局
         //spinner.setAdapter(spinnerAdapter);//加载下拉布局
         return view;
+    }
+
+    private void initData() {
+        String number = student.getStuNum().substring(0,4);
+        Log.e("init",number);
+        if (number.equals("2015")){
+            team.setText("大三第二学期");
+        }else if (number.equals("2014")){
+            team.setText("大四第二学期");
+        }else if (number.equals("2016")){
+            team.setText("大二第二学期");
+        }else if (number.equals("2017")){
+            team.setText("大一第二学期");
+        }
+    }
+
+    private void initView(View view) {
+        utilText = view.findViewById(R.id.fragment_kcb_left);
+        team = view.findViewById(R.id.fragment_kcb_title);
+        utilText.setOnClickListener(this);
+        team.setOnClickListener(this);
     }
 
     /**
@@ -115,4 +141,14 @@ public class KCBFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id){
+            case R.id.fragment_kcb_left:
+                break;
+            case R.id.fragment_kcb_title:
+                break;
+        }
+    }
 }

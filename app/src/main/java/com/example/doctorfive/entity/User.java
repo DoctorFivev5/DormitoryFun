@@ -1,11 +1,13 @@
 package com.example.doctorfive.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by DoctorFive on 2017/10/12.
  * 用户实体类
  */
 
-public class User {
+public class User implements Serializable {
     private int id;
     private String username;//用户名
     private String password;//密码
@@ -17,6 +19,7 @@ public class User {
     private String stuNum;//学号
     private int state; //状态
     private String  dormitoryID;//房间号
+    private String autograph;   //签名
 
     //对学号和手机号和房间号的类型进行了修改
     //修改类型从int 改为 string
@@ -108,5 +111,13 @@ public class User {
 
     public void setDormitoryID(String dormitoryID) {
         this.dormitoryID = dormitoryID;
+    }
+
+    public String getAutograph() {
+        return autograph;
+    }
+
+    public void setAutograph(String autograph) {
+        this.autograph = autograph;
     }
 }

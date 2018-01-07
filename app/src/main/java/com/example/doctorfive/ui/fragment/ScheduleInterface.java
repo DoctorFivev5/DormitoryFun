@@ -15,15 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.doctorfive.adapter.RecyclerAdapter;
+import com.example.doctorfive.adapter.ScheduleRecyclerAdapter;
 import com.example.doctorfive.db.DBHelper;
 import com.example.doctorfive.dormitoryfun.R;
 import com.example.doctorfive.entity.Schedule;
 import com.example.doctorfive.entity.ScheduleItem;
 import com.example.doctorfive.ui.activity.ScheduleActivity;
 import com.example.doctorfive.util.CalendarUtil;
+import com.example.doctorfive.weight.MyItemDecoration;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +51,7 @@ public class ScheduleInterface extends Fragment implements CalendarView.OnDateSe
     private LinearLayoutManager layoutManager ;
     private List<ScheduleItem> myScheduleItemList = new ArrayList<>();
     private List<Schedule> myScheduleList;
-    private RecyclerAdapter myRecyclerAdapter;
+    private ScheduleRecyclerAdapter myScheduleRecyclerAdapter;
     private View headerView;
     private FloatingActionButton fab;
 
@@ -80,6 +82,7 @@ public class ScheduleInterface extends Fragment implements CalendarView.OnDateSe
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode==scheduleCode){
             Schedule mySchedule = (Schedule) data.getSerializableExtra("mySchedule");
+            Log.e("idididididididi"," "+mySchedule.getId());
             ScheduleItem scheduleItem = new ScheduleItem(mySchedule.getId(), R.mipmap.ic_launcher,mySchedule.getTitle(),mySchedule.getStartTime(),R.drawable.enter);
             addItem(0, scheduleItem);//得到日期----日期下的日程----日程添加进recyclerview
         }
@@ -102,8 +105,13 @@ public class ScheduleInterface extends Fragment implements CalendarView.OnDateSe
         myRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(getActivity());
         myRecyclerView.setLayoutManager(layoutManager);
-        myRecyclerAdapter = new RecyclerAdapter(myScheduleItemList);
-        myRecyclerView.setAdapter(myRecyclerAdapter);
+        myScheduleRecyclerAdapter = new ScheduleRecyclerAdapter(myScheduleItemList);
+        myRecyclerView.setAdapter(myScheduleRecyclerAdapter);
+        myRecyclerView.addItemDecoration( new HorizontalDividerItemDecoration.Builder(getContext())
+                .color(R.color.powderblue)
+                .sizeResId(R.dimen.divider)
+                .marginResId(R.dimen.leftmargin, R.dimen.rightmargin)
+                .build());
         //为RecyclerView添加HeaderView
         //headerView = LayoutInflater.from(getActivity()).inflate(R.layout.recycle_header, myRecyclerView, false);
         //setHeaderView(myRecyclerView);
@@ -189,16 +197,16 @@ public class ScheduleInterface extends Fragment implements CalendarView.OnDateSe
         date = CalendarUtil.dateFormat(calendar.getYear(), calendar.getMonth()-1, calendar.getDay());
         Log.e("onDateSelected",date);
         myRecyclerView.removeAllViews();
-        myRecyclerAdapter.notifyDataSetChanged();
+        myScheduleRecyclerAdapter.notifyDataSetChanged();
         myScheduleItemList.clear();
         initData();
-        //myRecyclerAdapter = new RecyclerAdapter(myScheduleItemList);
-        //myRecyclerView.setAdapter(myRecyclerAdapter);
+        //myScheduleRecyclerAdapter = new ScheduleRecyclerAdapter(myScheduleItemList);
+        //myRecyclerView.setAdapter(myScheduleRecyclerAdapter);
     }
 
     private void setHeaderView(RecyclerView view){
         View header = LayoutInflater.from(getActivity()).inflate(R.layout.recycle_header, view, false);
-        myRecyclerAdapter.setHeaderView(header);
+        myScheduleRecyclerAdapter.setHeaderView(header);
     }
 
     private void initHeaderView(View view) {
@@ -209,7 +217,7 @@ public class ScheduleInterface extends Fragment implements CalendarView.OnDateSe
 
     private void setFooterView(RecyclerView view){
         View footer = LayoutInflater.from(getActivity()).inflate(R.layout.recycle_footer, view, false);
-        myRecyclerAdapter.setFooterView(footer);
+        myScheduleRecyclerAdapter.setFooterView(footer);
     }
 
     /**
@@ -220,8 +228,9 @@ public class ScheduleInterface extends Fragment implements CalendarView.OnDateSe
 
     public void addItem(int position, ScheduleItem scheduleItem) {
         myScheduleItemList.add(position, scheduleItem);
-        myRecyclerAdapter.notifyItemInserted(position);//通知演示插入动画
-        myRecyclerAdapter.notifyItemRangeChanged(position,myRecyclerAdapter.getItemCount()-position);//通知数据与界面重新绑定
+        myScheduleRecyclerAdapter.notifyItemInserted(position);//通知演示插入动画
+        myScheduleRecyclerAdapter.notifyItemRangeChanged(position, myScheduleRecyclerAdapter.getItemCount());//通知数据与界面重新绑定
+
     }
 
 

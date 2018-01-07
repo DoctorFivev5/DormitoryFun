@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.doctorfive.ui.activity.DormitoryActivity">
+
+    <LinearLayout
+        android:id="@+id/returntext"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/skyblue">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/returnimg"/>
+            <TextView
+                android:id="@+id/left_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="27dp"
+                android:textSize="20sp"
+                android:text="返回"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/place"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/returntext"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="报修区域"
+            android:textSize="22sp"
+            android:layout_gravity="center_vertical"/>
+
+        <EditText
+            android:id="@+id/placetext"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="20dp"
+            android:background="@null"
+            android:layout_gravity="center_vertical"
+            android:hint="学生宿舍或者办公楼宇" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/place"
+        android:layout_marginTop="0dp"
+        android:background="@color/skyblue"
+        android:id="@+id/view" />
+    <LinearLayout
+        android:id="@+id/room"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/view"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="房间号    "
+            android:textSize="22sp"
+            android:layout_gravity="center_vertical"/>
+
+        <EditText
+            android:id="@+id/roomtext"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="20dp"
+            android:background="@null"
+            android:layout_gravity="center_vertical"
+            android:hint="" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/room"
+        android:layout_marginTop="0dp"
+        android:background="@color/skyblue"
+        android:id="@+id/view1" />
+    <LinearLayout
+        android:id="@+id/project"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/view1"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="报修项目"
+            android:textSize="22sp"
+            android:layout_gravity="center_vertical"/>
+
+        <EditText
+            android:id="@+id/projecttext"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="20dp"
+            android:background="@null"
+            android:layout_gravity="center_vertical"
+            android:hint="水电木工" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/project"
+        android:layout_marginTop="0dp"
+        android:background="@color/skyblue"
+        android:id="@+id/view2" />
+    <LinearLayout
+        android:id="@+id/details"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/view2"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="报修详情"
+            android:textSize="22sp"
+            android:layout_gravity="center_vertical"/>
+
+        <EditText
+            android:id="@+id/detailstext"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="20dp"
+            android:background="@null"
+            android:layout_gravity="center_vertical"
+            android:hint="请输入报修详情" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/details"
+        android:layout_marginTop="0dp"
+        android:background="@color/skyblue"
+        android:id="@+id/view3" />
+    <LinearLayout
+        android:id="@+id/who"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/view3"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="报修人    "
+            android:textSize="22sp"
+            android:layout_gravity="center_vertical"/>
+
+        <EditText
+            android:id="@+id/whotext"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="20dp"
+            android:background="@null"
+            android:layout_gravity="center_vertical"
+            android:hint="" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/who"
+        android:layout_marginTop="0dp"
+        android:background="@color/skyblue"
+        android:id="@+id/view4" />
+    <LinearLayout
+        android:id="@+id/phonenum"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/view4"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="联系方式"
+            android:textSize="22sp"
+            android:layout_gravity="center_vertical"/>
+
+        <EditText
+            android:id="@+id/phonenumtext"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="20dp"
+            android:background="@null"
+            android:layout_gravity="center_vertical"
+            android:hint="" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/phonenum"
+        android:layout_marginTop="0dp"
+        android:background="@color/skyblue"
+        android:id="@+id/view5" />
+    <Button
+        android:id="@+id/button"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="@color/skyblue"
+        android:text="提交"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="51dp" />
+
+</RelativeLayout>
+
+
+<!--<TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我的宿舍emmmm"
+        android:textSize="24sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/fix_home"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="157dp" />-->

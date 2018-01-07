@@ -27,7 +27,7 @@ public class DBHelper {
     private static final String DATABASE_NAME = "datastorage1";// 保存数据库名称
     private static final int DATABASE_VERSION = 2;// 保存数据库版本号
     private static final String[] TABLE_NAME = {"User", "Student","Timetable","Schedule"};// 保存表名称
-    private static final String[] USER_COLUMNS = { "user_id","username", "password", "phoneNum" , "sex", "email", "school", "userIcon", "stuNum","state", "dormitoryID"};
+    private static final String[] USER_COLUMNS = { "user_id","username", "password", "phoneNum" , "sex", "email", "school", "userIcon", "stuNum","state", "dormitoryID", "autograph"};
     private static final String[] STUDENT_COLUMNS = {"studentNum", "name", "className", "stuPassword"};//缺少课表id
     private static final String[] TIMETABLE_COLUMNS = {"class_id", "class1", "class2", "class3", "class4", "class5", "class6", "class7", "class8", "class9", "class10", "class11", "class12", "class13", "class14", "class15", "class16", "class17", "class18", "class19", "class20", "class21", "class22", "class23", "class24", "class25", "class26", "class27", "class28", "class29", "class30", "class31", "class32", "class33", "class34", "class35", "class36", "class37", "class38", "class39", "class40", "class41", "class42", "class43", "class44", "class45", "class46", "class47", "class48", "class49", "stuNum", "term"};
     private static final String[] SCHEDULE_COLUMNS ={"schedule_id", "day", "type", "title", "startTime", "overtime", "remarks", "user_id"};
@@ -38,22 +38,24 @@ public class DBHelper {
         //定义student表sql语句
         private static final String CREATE_TABLE_USER = "create table " + TABLE_NAME[0]
                 + " ( " + USER_COLUMNS[0] + " integer primary key autoincrement, "
-                + USER_COLUMNS[1] + " varchar(60),"
-                + USER_COLUMNS[2] + " varchar(20), "
-                + USER_COLUMNS[3] + " varchar(15), "
+                + USER_COLUMNS[1] + " varchar(60) ,"
+                + USER_COLUMNS[2] + " varchar(20) , "
+                + USER_COLUMNS[3] + " varchar(15) , "
                 + USER_COLUMNS[4] + " char(4), "
-                + USER_COLUMNS[5] + " varchar(50), "
+                + USER_COLUMNS[5] + " varchar(50) , "
                 + USER_COLUMNS[6] + " varchar(50), "
                 + USER_COLUMNS[7] + " varchar(256), "
                 + USER_COLUMNS[8] + " char(12), "
-                + USER_COLUMNS[9] + " integer, "
-                + USER_COLUMNS[10] + " integer);";// 定义创建user表格的SQL语句
+                + USER_COLUMNS[9] + " integer , "
+                + USER_COLUMNS[10] + " integer ,"
+                + USER_COLUMNS[11] + " Text);";// 定义创建user表格的SQL语句
 
         private static final String CREATE_TABLE_STUDENT = "create table " + TABLE_NAME[1]
                 + " ( " + STUDENT_COLUMNS[0] + " char(12) primary key, "
                 + STUDENT_COLUMNS[1] + " varchar(60),"
                 + STUDENT_COLUMNS[2] + " varchar(100), "
                 + STUDENT_COLUMNS[3] + " varchar(20)); ";// 定义创建Student表格的SQL语句
+
         private static final String CREATE_TABLE_TIMETABLE = "create table " + TABLE_NAME[2]
                 + " ( " + TIMETABLE_COLUMNS[0] + " integer primary key autoincrement, "
                 + TIMETABLE_COLUMNS[1] + " varchar(100),"
@@ -147,13 +149,14 @@ public class DBHelper {
         values.put(USER_COLUMNS[1], user.getUsername());
         values.put(USER_COLUMNS[2], user.getPassword());
         values.put(USER_COLUMNS[3], user.getPhoneNum());
-        values.put(USER_COLUMNS[4], user.isSex());
+        values.put(USER_COLUMNS[4], user.isSex()?"男":"女");
         values.put(USER_COLUMNS[5], user.getEmail());
         values.put(USER_COLUMNS[6], user.getSchool());
         values.put(USER_COLUMNS[7], user.getIcon());
         values.put(USER_COLUMNS[8], user.getStuNum());
         values.put(USER_COLUMNS[9], user.getState());
         values.put(USER_COLUMNS[10], user.getDormitoryID());
+        values.put(USER_COLUMNS[11], user.getAutograph());
         db.insert(TABLE_NAME[0], null, values);
     }
 
@@ -266,7 +269,7 @@ public class DBHelper {
         String password;
         String phoneNum = user.getPhoneNum();
         String stuNum = user.getStuNum();
-        Cursor cursor = db.rawQuery("select phoneNum, studentNum, password from User where phoneNum=? and studentNum=?", new String[]{phoneNum,stuNum});
+        Cursor cursor = db.rawQuery("select password from User where phoneNum=? and stuNum=?", new String[]{phoneNum,stuNum});
         if (cursor.moveToFirst()){
             password = cursor.getString(cursor.getColumnIndex("password"));
             cursor.close();
@@ -285,13 +288,17 @@ public class DBHelper {
             user.setUsername(cursor.getString(cursor.getColumnIndex("username")));// android.database.CursorIndexOutOfBoundsException: Index 0 requested, with a size of 0
             user.setPassword(cursor.getString(cursor.getColumnIndex("password")));
             user.setPhoneNum(cursor.getString(cursor.getColumnIndex("phoneNum")));
-            user.setSex(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex("sex"))));
+            if (cursor.getString(cursor.getColumnIndex("sex")).equals("男"))
+                user.setSex(true);
+            else
+                user.setSex(false);
             user.setEmail(cursor.getString(cursor.getColumnIndex("email")));
             user.setSchool(cursor.getString(cursor.getColumnIndex("school")));
             user.setIcon(cursor.getString(cursor.getColumnIndex("userIcon")));
             user.setStuNum(cursor.getString(cursor.getColumnIndex("stuNum")));
             user.setState(Integer.parseInt(cursor.getString(cursor.getColumnIndex("state"))));
             user.setDormitoryID(cursor.getString(cursor.getColumnIndex("dormitoryID")));
+            user.setAutograph(cursor.getString(cursor.getColumnIndex("autograph")));
             cursor.close();
             return user;
         }else
@@ -301,6 +308,8 @@ public class DBHelper {
             return user;
         }
     }
+
+
 
 
     public Student export(Student student){
@@ -411,13 +420,10 @@ public class DBHelper {
 
     }
 
-    public List<Schedule> export(int user_id, String date){
-        List<Schedule> scheduleList = new ArrayList<>();
-
-        Cursor cursor = db.rawQuery("select * from Schedule where user_id=? and day=?", new String[]{String.valueOf(user_id), date});
-        if (cursor.moveToFirst()) {
+    public Schedule export(Schedule schedule){
+        Cursor cursor = db.rawQuery("select * from Schedule where user_id=?", new String[]{String.valueOf(schedule.getUserID())});
+        if (cursor.moveToLast()) {
              do {
-                 Schedule schedule = new Schedule();
                  schedule.setId(cursor.getInt(cursor.getColumnIndex("schedule_id")));
                  schedule.setDay(cursor.getString(cursor.getColumnIndex("day")));
                  schedule.setType(cursor.getString(cursor.getColumnIndex("type")));
@@ -426,7 +432,27 @@ public class DBHelper {
                  schedule.setRemindTime(cursor.getString(cursor.getColumnIndex("overtime")));
                  schedule.setRemarks(cursor.getString(cursor.getColumnIndex("remarks")));
                  schedule.setUserID(cursor.getInt(cursor.getColumnIndex("user_id")));
-                 scheduleList.add(schedule);
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        return schedule;
+    }
+    public List<Schedule> export(int user_id, String date){
+        List<Schedule> scheduleList = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("select * from Schedule where user_id=? and day=?", new String[]{String.valueOf(user_id), date});
+        if (cursor.moveToFirst()) {
+            do {
+                Schedule schedule = new Schedule();
+                schedule.setId(cursor.getInt(cursor.getColumnIndex("schedule_id")));
+                schedule.setDay(cursor.getString(cursor.getColumnIndex("day")));
+                schedule.setType(cursor.getString(cursor.getColumnIndex("type")));
+                schedule.setTitle(cursor.getString(cursor.getColumnIndex("title")));
+                schedule.setStartTime(cursor.getString(cursor.getColumnIndex("startTime")));
+                schedule.setRemindTime(cursor.getString(cursor.getColumnIndex("overtime")));
+                schedule.setRemarks(cursor.getString(cursor.getColumnIndex("remarks")));
+                schedule.setUserID(cursor.getInt(cursor.getColumnIndex("user_id")));
+                scheduleList.add(schedule);
             }while (cursor.moveToNext());
         }
         cursor.close();
@@ -443,6 +469,26 @@ public class DBHelper {
             Toast.makeText(MyApplication.getContext(), "凉凉", Toast.LENGTH_SHORT).show();
         }
     }
+//"user_id","username", "password", "phoneNum" , "sex", "email", "school", "userIcon", "stuNum","state", "dormitoryID"
+    public void update(User user){
+        //更新用户信息
+        String username = user.getUsername();
+        String phoneNum = user.getPhoneNum();
+        String userIcon = user.getIcon();
+        String stuNum = user.getStuNum();
+        String sex = user.isSex()?"男":"女";
+        String email = user.getEmail();
+        String school = user.getSchool();
+        String autograph = user.getAutograph();
+        Cursor cursor = db.rawQuery("select phoneNum from User where phoneNum=?", new String[]{phoneNum});
+        if (cursor.moveToFirst()){
+            db.execSQL("update User set username=?, userIcon=?, stuNum=?, sex=?, email=?, school=?, autograph=?  where phoneNum=?",new String[] {username, userIcon, stuNum, sex, email,school,autograph, phoneNum});
+            Log.e("DB",username+phoneNum+userIcon+stuNum+sex+email+school+autograph);
+        }else {
+            Log.e("DBHelper_updata_user","emmm");
+        }
+    }
+
 
 
 //    private static final String[] USER_COLUMNS = { " id","username", "password", "name", "sex", "studentNum", "phoneNum", "email", "school", "state", "dormitoryID"};

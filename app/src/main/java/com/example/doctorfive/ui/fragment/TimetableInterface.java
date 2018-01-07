@@ -3,7 +3,6 @@ package com.example.doctorfive.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,9 +19,9 @@ import android.widget.Toast;
 import com.example.doctorfive.db.DBHelper;
 import com.example.doctorfive.entity.Student;
 import com.example.doctorfive.entity.Timetable;
+import com.example.doctorfive.entity.User;
 import com.example.doctorfive.util.CheckoutNetworkUtil;
 import com.example.doctorfive.util.cookies.CookieJarImpl;
-import com.example.doctorfive.ui.activity.KCBActivity;
 import com.example.doctorfive.entity.MesValue;
 import com.example.doctorfive.base.MyApplication;
 import com.example.doctorfive.dormitoryfun.R;
@@ -55,8 +54,8 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
     private SharedPreferences pref;  //SharedPreferences的提取操作实例
     private SharedPreferences.Editor editor;  //SharedPreferences的存储操作实例
 
-    private DBHelper dbHelper;
-
+    private DBHelper myDBHelper;
+    private User myUser;
     private String phoneNum;//获得当前账号的手机号
     private EditText stuNum;//学号输入框的控件
     private EditText stuPassword;//教务在线的密码输入框的控件
@@ -152,7 +151,11 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
         //logon = (Button) view.findViewById(R.id.logon);
         pref = getActivity().getSharedPreferences("userPwd",MODE_PRIVATE);
         phoneNum = pref.getString("phoneNum","");
-        dbHelper = new DBHelper(getActivity());
+        myDBHelper = new DBHelper(getActivity());
+        myUser = new User();
+        myUser.setPhoneNum(phoneNum);
+        myUser = myDBHelper.export(myUser);
+        Log.e("initView",myUser.getUsername());
         /*
         接下来就是先查找这个账户下的课表项
         如果有则直接导入课程表界面
@@ -332,13 +335,17 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
                 然后再打开kcbfragment
                  */
                 Timetable timetable = new Timetable(classes,stuNum.getText().toString(),17182);
-                dbHelper.insert(timetable);//新增插入课表
+                myDBHelper.insert(timetable);//新增插入课表
                 mStudent = new Student();
                 mStudent.setStuNum(stuNumS);
                 mStudent.setStuPassword(stuPasswordS);//新增插入学生
-                dbHelper.insert(mStudent);
+                myDBHelper.insert(mStudent);
                 Log.e("TimetableInterface",phoneNum+" 0");
-                dbHelper.update(phoneNum,stuNumS);//把学号插入用户
+                myUser.setStuNum(stuNumS);
+                myUser.setIcon("http://jwc.jxnu.edu.cn/StudentPhoto/"+ stuNumS+".jpg?a=20171124191233");
+                myDBHelper.update(myUser);//把学号插入用户
+                myUser = myDBHelper.export(myUser);
+                Log.e("Time",myUser.getIcon()+" "+myUser.getUsername()+" "+myUser.getStuNum());
                 Message message = mHandler.obtainMessage();
                 message.what=3;
                 message.obj = mStudent;

@@ -322,9 +322,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // 当点击了我的tab时，改变控件的图片和文字颜色
                 myImage.setImageResource(R.drawable.my_unselected);
                 myText.setTextColor(ResourcesCompat.getColor(getResources(),R.color.skyblue,null));
+                Bundle bundle2 = new Bundle();
+                bundle2.putString("phoneNum",user.getPhoneNum());
                 if (myFragment == null) {
                     // 如果SettingFragment为空，则创建一个并添加到界面上
                     myFragment = new MyInterface();
+                    myFragment.setArguments(bundle2);
                     transaction.add(R.id.content, myFragment);
                 } else {
                     // 如果SettingFragment不为空，则直接将它显示出来

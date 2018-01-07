@@ -25,6 +25,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -35,63 +36,99 @@ import com.example.doctorfive.util.CircleCropUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class PersonalInformation extends AppCompatActivity implements View.OnClickListener {
 
     public static final int TAKE_PHOTO = 1;
     public static final int CHOOSE_PHOTO = 2;
+    public static final int CHANGE_IMFORMATION = 0x11;
     private Uri imageUri;
+    private TextView goback;
+    private TextView edit;
     private ImageView bg;
     private ImageView icon;
-    private Button changeInformation;
+    private TextView username;
+    private TextView autograph;
+    private TextView phoneNum;
+    private TextView sex;
+    private TextView school;
+
     private View inflate;
     private Button choosePhoto;
     private Button takePhoto;
     private Button cancel;
     private Dialog dialog;
     private DBHelper dbHelper;
-    private SQLiteDatabase db;
+    private User myUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personal_information);
-        final Intent intent = getIntent();
-        final Bundle bundle = intent.getExtras();
-        final User user = new User();
-        user.setPhoneNum(bundle.getString("phoneNum"));
+        initView();
+        changeData();
+    }
+
+    private void changeData() {
+        username.setText(myUser.getUsername());
+        autograph.setText(myUser.getAutograph());
+        phoneNum.setText(myUser.getPhoneNum());
+        sex.setText(myUser.isSex()?"男":"女");
+        school.setText(myUser.getSchool());
+        loadingHeaderIcon(myUser.getIcon());
+    }
+
+    private void initView(){
         dbHelper = new DBHelper(this);
-        /*
-        db = dbHelper.getDb();
-        Cursor cursor = db.rawQuery("select * from User where phoneNum=?", new String[]{user.getPhoneNum()});
-        dbHelper.export(cursor, user);
-        */
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        myUser = new User();
+        myUser.setPhoneNum(bundle.getString("phoneNum"));
+        myUser = dbHelper.export(myUser);
+        goback = (TextView) findViewById(R.id.left_text);
+        edit = (TextView) findViewById(R.id.right_text);
         bg = (ImageView) findViewById(R.id.bg);
         icon = (ImageView) findViewById(R.id.icon_image);
-        changeInformation = (Button) findViewById(R.id.change_information);
-        dbHelper = new DBHelper(this);
-        db = dbHelper.getDb();
-        String map_url = "http://jwc.jxnu.edu.cn/StudentPhoto/"+ user.getStuNum()+".jpg?a=20171124191233";
-        //Toast.makeText(MyApplication.getContext(),map_url,Toast.LENGTH_LONG).show();
-        Glide.with(this).load(map_url)
-                .transform(new CircleCropUtil(this))
-                .into(icon);
+        username = (TextView) findViewById(R.id.username);
+        autograph = (TextView) findViewById(R.id.autograph);
+        phoneNum = (TextView) findViewById(R.id.phoneNum);
+        sex = (TextView) findViewById(R.id.sex);
+        school = (TextView) findViewById(R.id.school);
+        goback.setOnClickListener(this);
+        edit.setOnClickListener(this);
         bg.setOnClickListener(this);
         icon.setOnClickListener(this);
-        changeInformation.setOnClickListener(this);
+        changeData();
     }
+
+
+    private void loadingHeaderIcon(String url){
+        Glide.with(this).load(url)
+                .transform(new CircleCropUtil(this))
+                .placeholder(R.mipmap.ic_launcher)
+                .into(icon);
+    }
+
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.left_text:
+                finish();
+                break;
+            case R.id.right_text:
+                Intent intent1 =  new Intent(PersonalInformation.this, EditImformationActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putSerializable("myUser",myUser);
+                intent1.putExtras(bundle1);
+                startActivityForResult(intent1,CHANGE_IMFORMATION);
+                break;
             case R.id.bg:
-                Toast.makeText(this,"更换背景",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this,"更换背景",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.icon_image:
                 showMyDialog();
-                break;
-            case R.id.change_information:
-                Toast.makeText(this,"修改个人信息",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.takePhoto:
                 File outputImage = new File(getExternalCacheDir(), "output_image.jpg");
@@ -109,9 +146,9 @@ public class PersonalInformation extends AppCompatActivity implements View.OnCli
                     imageUri = Uri.fromFile(outputImage);
                 }
                 //启动相机程序
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-                startActivityForResult(intent,TAKE_PHOTO);
+                Intent intent2 = new Intent("android.media.action.IMAGE_CAPTURE");
+                intent2.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+                startActivityForResult(intent2,TAKE_PHOTO);
                 dialog.dismiss();
                 break;
             case R.id.choosePhoto:
@@ -143,7 +180,7 @@ public class PersonalInformation extends AppCompatActivity implements View.OnCli
         Window dialogWindow = dialog.getWindow();
         dialogWindow.setGravity( Gravity.BOTTOM);
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        lp.y = 20;
+        lp.y = 40;
         dialogWindow.setAttributes(lp);
         dialog.show();
     }
@@ -162,6 +199,7 @@ public class PersonalInformation extends AppCompatActivity implements View.OnCli
                     Toast.makeText(this, "You denied the permission", Toast.LENGTH_SHORT).show();
                 }
                 break;
+
             default:
                 break;
         }
@@ -171,11 +209,10 @@ public class PersonalInformation extends AppCompatActivity implements View.OnCli
         switch (requestCode){
             case TAKE_PHOTO:
                 if (resultCode == RESULT_OK){
-
                         //将拍摄的照片显示出来
-                        Glide.with(this).load(imageUri)
-                                .transform(new CircleCropUtil(this))
-                                .into(icon);
+                    loadingHeaderIcon(imageUri.toString());
+                    myUser.setIcon(imageUri.toString());
+                    dbHelper.update(myUser);
                 }
                 break;
             case CHOOSE_PHOTO:
@@ -188,7 +225,15 @@ public class PersonalInformation extends AppCompatActivity implements View.OnCli
                         handleImageBeforeKitKat(data);
                     }
                 }
+                break;
             default:
+                break;
+        }
+        switch (resultCode){
+            case CHANGE_IMFORMATION:
+                Bundle bundle = data.getExtras();
+                myUser = (User) bundle.getSerializable("myUser");
+                changeData();
                 break;
         }
     }
@@ -234,10 +279,11 @@ public class PersonalInformation extends AppCompatActivity implements View.OnCli
         return path;
     }
     private void displayImage(String imagePath) {
+
         if (imagePath != null){
-            Glide.with(this).load(imagePath)
-                    .transform(new CircleCropUtil(this))
-                    .into(icon);
+            loadingHeaderIcon(imagePath);
+            myUser.setIcon(imagePath);
+            dbHelper.update(myUser);
         }else {
             Toast.makeText(this, "failed to get image", Toast.LENGTH_SHORT).show();
         }

@@ -117,7 +117,7 @@
             app:scheme_theme_color="#8b4513"
             app:selected_text_color="#fff"
             app:selected_theme_color="@color/whitesmoke"
-            app:week_background="#f0f0f0"
+            app:week_background="@color/skyblue"
             app:week_text_color="#111" />
 
 

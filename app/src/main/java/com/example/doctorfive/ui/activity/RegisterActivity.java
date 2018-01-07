@@ -49,6 +49,10 @@ public class RegisterActivity extends AppCompatActivity {
                         if (password_1S.equals(password_2S)) {
                             myUser.setPhoneNum(phoneNumS);
                             myUser.setPassword(password_1S);
+                            myUser.setUsername("无用户名");
+                            myUser.setEmail("无");
+                            myUser.setSchool("无");
+                            myUser.setSex(true);
                             myDbHelper.insert(myUser);
                             finish();
                         } else {

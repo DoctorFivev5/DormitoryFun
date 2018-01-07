@@ -20,7 +20,7 @@ import java.util.List;
  * Created by DoctorFive on 2017/12/27.
  */
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecyclerAdapter.ViewHolder> {
 
     public static final int TYPE_HEADER = 0;  //说明是带有Header的
     public static final int TYPE_FOOTER = 1;  //说明是带有Footer的
@@ -57,7 +57,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
     }
 
-    public RecyclerAdapter(List<ScheduleItem> scheduleItemList){
+    public ScheduleRecyclerAdapter(List<ScheduleItem> scheduleItemList){
         this.mySheduleitemList = scheduleItemList;
     }
 
@@ -93,7 +93,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
                 ScheduleItem scheduleItem = mySheduleitemList.get(position);
-                Log.e("RecyclerAdapter", scheduleItem.getScheduleId()+" ");
+                Log.e("ScheduleRecyclerAdapter", scheduleItem.getScheduleId()+" ");
                 Intent intent = new Intent(parent.getContext(), ScheduleDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("scheduleId", scheduleItem.getScheduleId());

@@ -42,7 +42,14 @@
         </provider>
 
         <activity android:name="com.example.doctorfive.ui.activity.ScheduleActivity" />
-        <activity android:name="com.example.doctorfive.ui.activity.ScheduleDetailActivity"></activity>
+        <activity android:name="com.example.doctorfive.ui.activity.ScheduleDetailActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.DormitoryActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.PowerActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.MoneyActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.FileActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.FixHomeActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.EditImformationActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.SettingActivity"></activity>
     </application>
 
 </manifest>

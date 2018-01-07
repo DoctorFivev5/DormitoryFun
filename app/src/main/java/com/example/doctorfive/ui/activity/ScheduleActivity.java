@@ -121,6 +121,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 mySchedule.setStartTime(startTimeText);
                 Log.e("Schedule傻逼",date);
                 myDBHelper.insert(mySchedule);
+                mySchedule = myDBHelper.export(mySchedule);
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("mySchedule", mySchedule);
