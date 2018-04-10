@@ -19,27 +19,73 @@ import com.example.doctorfive.ui.activity.PowerActivity;
 
 import java.util.List;
 
-/**
- * Created by DoctorFive on 2018/1/5.
- */
-
-public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.ViewHolder> {
+public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.ViewHolder>  {
 
     private List<Optionitem> optionitemList;
-
-    public MyRecyclerAdapter(List<Optionitem> optionitemList){
+    private MyItemClickListener mItemClickListener;
+    public MyRecyclerAdapter(List<Optionitem> optionitemList) {
         this.optionitemList = optionitemList;
     }
 
+    /**
+     * Created by DoctorFive on 2018/1/5.
+     */
+
+    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private View optionView;
+        private ImageView imageView;
+        private TextView textView;
+        private MyItemClickListener mListener;
+
+        public ViewHolder(View itemView, MyItemClickListener listener) {
+            super(itemView);
+            optionView = itemView;
+            imageView = (ImageView) itemView.findViewById(R.id.option_image);
+            textView = (TextView) itemView.findViewById(R.id.option_name);
+            mListener = listener;
+            optionView.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            if (mListener != null) {
+                mListener.onItemClick(v, getAdapterPosition());
+            }
+        }
+    }
     @Override
-    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.option_item,parent,false);
-        final ViewHolder holder = new ViewHolder(view);
-        holder.optionView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.option_item, parent, false);
+        return new ViewHolder(view, mItemClickListener);
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Optionitem optionitem = optionitemList.get(position);
+        holder.imageView.setImageResource(optionitem.getImageId());
+        holder.textView.setText(optionitem.getName());
+    }
+
+    @Override
+    public int getItemCount() {
+        return optionitemList.size();
+    }
+
+    public interface MyItemClickListener {
+        public void onItemClick(View view, int position);
+    }
+
+    public void setOnItemClickListener(MyItemClickListener listener){
+        this.mItemClickListener = listener;
+    }
+
+}
+
+/*
+public void onClick(View view) {
                 int position = holder.getAdapterPosition();
-                switch (position){
+                switch (position) {
                     case 0:
                         Intent intent = new Intent(parent.getContext(), DormitoryActivity.class);
                         parent.getContext().startActivity(intent);
@@ -62,31 +108,4 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
                         break;
                 }
             }
-        });
-        return holder;
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Optionitem optionitem = optionitemList.get(position);
-        holder.imageView.setImageResource(optionitem.getImageId());
-        holder.textView.setText(optionitem.getName());
-    }
-
-    @Override
-    public int getItemCount() {
-        return optionitemList.size();
-    }
-
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        View optionView;
-        ImageView imageView;
-        TextView textView;
-        public ViewHolder(View itemView) {
-            super(itemView);
-            optionView = itemView;
-            imageView = (ImageView) itemView.findViewById(R.id.option_image);
-            textView = (TextView) itemView.findViewById(R.id.option_name);
-        }
-    }
-}
+ */

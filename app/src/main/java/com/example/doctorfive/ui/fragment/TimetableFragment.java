@@ -1,6 +1,7 @@
 package com.example.doctorfive.ui.fragment;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -45,9 +46,9 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * tab课表 登录界面
  */
-public class TimetableInterface extends Fragment implements View.OnClickListener {
+public class TimetableFragment extends Fragment implements View.OnClickListener {
 
     private String loginUrl = "http://jwc.jxnu.edu.cn/Default_Login.aspx?preurl=";//教务在线登录url
     private String kcbUrl = "http://jwc.jxnu.edu.cn/User/default.aspx?&&code=111&uctl=MyControl%5cxfz_kcb.ascx&MyAction=Personal";//教务在线课表url
@@ -61,12 +62,12 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
     private EditText stuPassword;//教务在线的密码输入框的控件
     private Student mStudent;//传递给activity的学生
     private Button login;//登录控件
-    //private Button kcb;//获取课程表的控件
-    //private Button logon;//取消登录的控件
     private String stuNumS;//学号输入框的值
     private String stuPasswordS;//教务在线密码输入框的值
     private OkHttpClient.Builder builder;// OkHttpClient内部类Builder对象
     private OkHttpClient okHttpClient;// OkHttpClientd对象
+
+    @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {//在子线程里获取返回值
         @Override
         public void handleMessage(Message msg) {
@@ -82,6 +83,9 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
                 //case为3时：一个mainactivity的回调函数 响应课表的更新
                 case 3:
                     listterner.process((Student) msg.obj);
+                    break;
+                case 000:
+                    Toast.makeText(MyApplication.getContext(), "请检查网络~", Toast.LENGTH_SHORT).show();
                     break;
                 //case为101时：课表登陆出错（没有输入学号）
                 case 101:
@@ -112,11 +116,10 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
     public void onStart() {
         super.onStart();
         if (isAdded()) {//判断Fragment已经依附Activity
-            phoneNum = getArguments().getString("phoneNum");
+            myUser = (User) getArguments().getSerializable("myUser");
         }
     }
 
-    // 当FRagmen被加载到activity的时候会被回调
 
 
     @Override
@@ -132,7 +135,6 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_timetable_interface, container, false);
         initViews(view);
         initHttpCookies();
@@ -147,28 +149,21 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
         stuNum = (EditText) view.findViewById(R.id.stuNum1);
         stuPassword = (EditText) view.findViewById(R.id.stuPassword1);
         login = (Button) view.findViewById(R.id.login);
-        //kcb = (Button) view.findViewById(R.id.kcb);
-        //logon = (Button) view.findViewById(R.id.logon);
-        pref = getActivity().getSharedPreferences("userPwd",MODE_PRIVATE);
-        phoneNum = pref.getString("phoneNum","");
         myDBHelper = new DBHelper(getActivity());
-        myUser = new User();
-        myUser.setPhoneNum(phoneNum);
-        myUser = myDBHelper.export(myUser);
-        Log.e("initView",myUser.getUsername());
+        //myUser = new User();
+
+        //Log.e("initView",myUser.getUsername());
         /*
         接下来就是先查找这个账户下的课表项
         如果有则直接导入课程表界面
         没有则查看登录帐号导入
          */
         login.setOnClickListener(this);
-        //kcb.setOnClickListener(this);
-        //logon.setOnClickListener(this);
     }
 
-    /*
-    初始化持久化的cookies
-    初始化okhttp
+    /**
+     * 初始化持久化的cookies
+     *初始化okhttp
      */
     private void initHttpCookies(){
         builder = new OkHttpClient.Builder();
@@ -178,9 +173,10 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
         builder.cookieJar(cookieJarImpl);
         okHttpClient = builder.build();
     }
-    /*
-     * 登录教务在线
-     * 得到cookies
+
+    /**
+     * 登录教务在线 得到cookies
+     * @param mesValue 两个静态网页请求参数javabean类
      */
     private void goJXNU(Object mesValue) {
         stuNumS = stuNum.getText().toString();
@@ -204,7 +200,6 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
             @Override
             public void onFailure(Call call, IOException e) {
                 //Toast.makeText(MyApplication.getContext(),"帐号或密码错误",Toast.LENGTH_SHORT).show();
-                return;
             }
 
             @Override
@@ -214,10 +209,7 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
                 Document parse = Jsoup.parse(resp);
                 Elements getIsPwd = parse.select("script");
                 String s = getIsPwd.html();
-                Log.e("TimetableInterface",getIsPwd.html());
-                //Boolean isStuNum = s.matches("[\\u5b66][\\u53f7]");//学号不存在
-                //Boolean isPasswordEmpty = s.matches("[\\u8bf7][\\u60a8][\\u8f93][\\u5165][\\u5bc6][\\u7801]{0,6}");//请您输入密码
-                //Boolean isPassword = s.matches("[\\u60a8][\\u7684][\\u5bc6][\\u7801][\\u4e0d][\\u6b63][\\u786e]{1}");//您的密码不正确
+                Log.e("TimetableFragment",getIsPwd.html());
                 Message msg = mHandler.obtainMessage();
                 Boolean haveStuNum = s.matches(".*(请您输入学号).*");
                 Boolean isStuNum = s.matches(".*(学号不存在).*");
@@ -238,7 +230,6 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
                 }if (isPassword){
                     msg.what = 104;//传递msg  您的密码不正确
                     mHandler.sendMessage(msg);
-                    return;
                 }else {
                     getCS(kcbUrl);
                 }
@@ -247,8 +238,9 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
         });
     }
 
-    /*
-    得到教务在线网页post的html参数
+    /**
+     * 得到教务在线网页post的静态参数
+     * @param url 请求的网页参数
      */
     private void getCS(final String url) {
         //需要检测网络状态
@@ -257,8 +249,9 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
             okHttpClient.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    //Toast.makeText(MyApplication.getContext(), "请检查网络~", Toast.LENGTH_SHORT).show();
-                    return;
+                    Message msg = mHandler.obtainMessage();
+                    msg.what = 000;
+                    mHandler.sendMessage(msg);
                 }
 
                 @Override
@@ -287,10 +280,17 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
         }
     }
 
+    /**
+     * 登录教务在线
+     */
     public void login() {
         getCS(loginUrl);
     }
 
+    /**
+     * 获取课程表
+     * @param mesValue 两个静态网页请求参数javabean类
+     */
     public void getKCB(final Object mesValue) {
         FormBody formBody = new FormBody.Builder()
                 .add("__EVENTTARGET","")
@@ -310,7 +310,12 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String html = response.body().string();
-                html = html.replaceAll("<br>","").replaceAll("&nbsp;"," ");//去除html里的<br>标签和空格
+                /*
+                这里有改变
+                <br>标签保留 用于后期分割课程名、教室和老师
+                 */
+                html = html.replaceAll("<br>","-").replaceAll("&nbsp;","");//去除html里的<br>标签和空格
+
                 Document parse = Jsoup.parse(html);
                 Element table = parse.getElementsByTag("table").first();
                 Elements div = table.getElementsByTag("td");
@@ -326,8 +331,12 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
                     if(i==23||i==31||i==39||i==47||i==48||i==49||i==57||i==65||i==66)
                         continue;
                     classes[j] = div.get(i).text();
+                    Log.e("course", classes[j]);
                     j++;
                 }
+                /*
+                这里没有查询学生信息的姓名和班级----可以加入
+                 */
                 //接下来更新用户表中的学号
                 /*
                 就达成课程表入库，学生入库，学号入用户库
@@ -337,15 +346,18 @@ public class TimetableInterface extends Fragment implements View.OnClickListener
                 Timetable timetable = new Timetable(classes,stuNum.getText().toString(),17182);
                 myDBHelper.insert(timetable);//新增插入课表
                 mStudent = new Student();
+                mStudent.setPhoneNum(myUser.getPhoneNum());
                 mStudent.setStuNum(stuNumS);
                 mStudent.setStuPassword(stuPasswordS);//新增插入学生
+
                 myDBHelper.insert(mStudent);
-                Log.e("TimetableInterface",phoneNum+" 0");
+                //
+                //Log.e("TimetableFragment",phoneNum+" 0");
                 myUser.setStuNum(stuNumS);
-                myUser.setIcon("http://jwc.jxnu.edu.cn/StudentPhoto/"+ stuNumS+".jpg?a=20171124191233");
+                //myUser.setUserIcon("http://jwc.jxnu.edu.cn/StudentPhoto/"+ stuNumS+".jpg?a=20171124191233");
                 myDBHelper.update(myUser);//把学号插入用户
-                myUser = myDBHelper.export(myUser);
-                Log.e("Time",myUser.getIcon()+" "+myUser.getUsername()+" "+myUser.getStuNum());
+                //myUser = myDBHelper.export(myUser);
+                Log.e("Time",myUser.getUserIcon()+" "+myUser.getUsername()+" "+myUser.getStuNum());
                 Message message = mHandler.obtainMessage();
                 message.what=3;
                 message.obj = mStudent;

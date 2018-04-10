@@ -1,8 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'dormitoryfun'
+            keyPassword 'DoctorFive1997'
+            storeFile file('C:/Users/ASUS/Desktop/云寝/dormitoryfun.jks')
+            storePassword 'DoctorFive0503'
+        }
+    }
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.example.doctorfive.dormitoryfun"
         minSdkVersion 21
@@ -15,16 +23,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     //compile 'org.litepal.android:core:1.5.0'
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.github.bumptech.glide:glide:3.7.0'
@@ -36,14 +44,26 @@ dependencies {
     compile 'com.android.support:support-v4:26.+'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'org.jsoup:jsoup:1.9.2'
+    compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.android.gms:play-services-plus:11.0.2'
     compile 'com.squareup:android-times-square:1.6.5@aar'
     compile 'com.haibin:calendarview:3.1.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.yqritc:recyclerview-flexibledivider:1.4.0'
+    compile 'com.alibaba:fastjson:1.1.68.android'
+    //一个LoadingDialog控件
+    //compile 'com.github.gittjy:LoadingDialog:1.0.2'
+    compile 'com.github.ForgetAll:LoadingDialog:v1.0.1'
+    compile 'com.kyleduo.switchbutton:library:2.0.0'
     testCompile 'junit:junit:4.12'
 }
+
+
+
+
+
+
 
 
 

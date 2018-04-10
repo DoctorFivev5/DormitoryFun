@@ -23,3 +23,32 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+
+#-----------处理第三方依赖库---------
+# FastJson
+-dontwarn com.alibaba.fastjson.**
+-keep class com.alibaba.fastjson.** { *; }
+-keepattributes Signature
+-keepattributes *Annotation*
+
+# Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+
+# Gson
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.stream.** { *; }
+# 使用Gson时需要配置Gson的解析对象及变量都不混淆。不然Gson会找不到变量。
+# 将下面替换成自己的实体类
+-keep class com.example.doctorfive.entity.** { *; }
+
+# OkHttp3
+-dontwarn com.squareup.okhttp3.**
+-keep class com.squareup.okhttp3.** { *;}
+-dontwarn okio.**

@@ -6,10 +6,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.doctorfive.base.BaseActivity;
 import com.example.doctorfive.base.MyApplication;
 import com.example.doctorfive.dormitoryfun.R;
 
-public class FixHomeActivity extends AppCompatActivity {
+/**
+ * 报修管理界面
+ */
+public class FixHomeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

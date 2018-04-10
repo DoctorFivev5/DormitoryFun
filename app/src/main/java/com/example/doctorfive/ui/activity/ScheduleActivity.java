@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.doctorfive.base.BaseActivity;
 import com.example.doctorfive.db.DBHelper;
 import com.example.doctorfive.dormitoryfun.R;
 import com.example.doctorfive.entity.Schedule;
@@ -18,14 +19,16 @@ import com.example.doctorfive.util.CalendarUtil;
 
 import java.util.Calendar;
 
-/*
-讲道理4个日程种类
-应该设置成4个fragment的
-没时间写了
- */
+/**
+ * 日程新建页面
+ *
+ *讲道理4个日程种类
+ *应该设置成4个fragment的
+ *没时间写了
+*/
 
 
-public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener {
+public class ScheduleActivity extends BaseActivity implements View.OnClickListener {
 
 
     private int user_id;            //用来保存日程的外键

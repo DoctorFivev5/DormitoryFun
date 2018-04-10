@@ -10,7 +10,7 @@
     <application
         android:name="com.example.doctorfive.base.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/niubi"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
@@ -29,7 +29,6 @@
         <activity android:name="com.example.doctorfive.ui.activity.MainActivity" />
         <activity android:name="com.example.doctorfive.ui.activity.LoginActivity" />
         <activity android:name="com.example.doctorfive.ui.activity.PersonalInformation" />
-        <activity android:name="com.example.doctorfive.ui.activity.KCBActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -49,7 +48,10 @@
         <activity android:name="com.example.doctorfive.ui.activity.FileActivity" />
         <activity android:name="com.example.doctorfive.ui.activity.FixHomeActivity" />
         <activity android:name="com.example.doctorfive.ui.activity.EditImformationActivity" />
-        <activity android:name="com.example.doctorfive.ui.activity.SettingActivity"></activity>
+        <activity android:name="com.example.doctorfive.ui.activity.SettingActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.SelectCircleActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.FirstStartShowActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.DayCourseActivity"></activity>
     </application>
 
 </manifest>

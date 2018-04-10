@@ -32,9 +32,9 @@ import java.util.List;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * tab日程界面
  */
-public class ScheduleInterface extends Fragment implements CalendarView.OnDateSelectedListener, View.OnClickListener {
+public class ScheduleFragment extends Fragment implements CalendarView.OnDateSelectedListener, View.OnClickListener {
 
 
     private final int scheduleCode = 0x01;
@@ -63,7 +63,6 @@ public class ScheduleInterface extends Fragment implements CalendarView.OnDateSe
     public void onAttach(Context context) {
         super.onAttach(context);
         user_id = getArguments().getInt("user_id");
-        Log.e("如果我是dj你会爱我吗？","0 "+user_id);
     }
 
     @Override
@@ -82,7 +81,6 @@ public class ScheduleInterface extends Fragment implements CalendarView.OnDateSe
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode==scheduleCode){
             Schedule mySchedule = (Schedule) data.getSerializableExtra("mySchedule");
-            Log.e("idididididididi"," "+mySchedule.getId());
             ScheduleItem scheduleItem = new ScheduleItem(mySchedule.getId(), R.mipmap.ic_launcher,mySchedule.getTitle(),mySchedule.getStartTime(),R.drawable.enter);
             addItem(0, scheduleItem);//得到日期----日期下的日程----日程添加进recyclerview
         }
@@ -113,7 +111,7 @@ public class ScheduleInterface extends Fragment implements CalendarView.OnDateSe
                 .marginResId(R.dimen.leftmargin, R.dimen.rightmargin)
                 .build());
         //为RecyclerView添加HeaderView
-        //headerView = LayoutInflater.from(getActivity()).inflate(R.layout.recycle_header, myRecyclerView, false);
+        //headerView = LayoutInflater.from( getActivity()).inflate(R.layout.recycle_header, myRecyclerView, false);
         //setHeaderView(myRecyclerView);
         //initHeaderView(headerView);
         //initHeaderData();
@@ -148,7 +146,6 @@ public class ScheduleInterface extends Fragment implements CalendarView.OnDateSe
             myScheduleItemList.add(new ScheduleItem(schedule.getId(), R.mipmap.ic_launcher,schedule.getTitle(),schedule.getStartTime(),R.drawable.enter));
             i++;
 
-            Log.e("Scednnnnnnn",""+i);
         }
         /*
         ScheduleItem scheduleitem = new ScheduleItem(R.mipmap.ic_launcher,"阿西吧",mCalendarView.getSelectedCalendar().getMonth() + "月" + mCalendarView.getSelectedCalendar().getDay() + "日",R.drawable.enter);

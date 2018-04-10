@@ -1,0 +1,15 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.doctorfive.ui.fragment.FirstStartTwoFragment">
+
+    <ImageView
+        android:id="@+id/first_start_two_image"
+        android:layout_width="match_parent"
+        android:scaleType="fitXY"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/jiaowu"/>
+
+</LinearLayout>

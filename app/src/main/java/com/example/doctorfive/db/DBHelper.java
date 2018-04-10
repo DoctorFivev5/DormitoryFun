@@ -5,17 +5,34 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.doctorfive.base.MyApplication;
+import com.example.doctorfive.entity.MessagAndObject;
+import com.example.doctorfive.entity.Pwd;
 import com.example.doctorfive.entity.Schedule;
 import com.example.doctorfive.entity.Student;
 import com.example.doctorfive.entity.Timetable;
 import com.example.doctorfive.entity.User;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by DoctorFive on 2017/11/21.
@@ -31,15 +48,38 @@ public class DBHelper {
     private static final String[] STUDENT_COLUMNS = {"studentNum", "name", "className", "stuPassword"};//缺少课表id
     private static final String[] TIMETABLE_COLUMNS = {"class_id", "class1", "class2", "class3", "class4", "class5", "class6", "class7", "class8", "class9", "class10", "class11", "class12", "class13", "class14", "class15", "class16", "class17", "class18", "class19", "class20", "class21", "class22", "class23", "class24", "class25", "class26", "class27", "class28", "class29", "class30", "class31", "class32", "class33", "class34", "class35", "class36", "class37", "class38", "class39", "class40", "class41", "class42", "class43", "class44", "class45", "class46", "class47", "class48", "class49", "stuNum", "term"};
     private static final String[] SCHEDULE_COLUMNS ={"schedule_id", "day", "type", "title", "startTime", "overtime", "remarks", "user_id"};
+    private static final int LOGIN_OF_SECCESS = 111;
+    private static User myUser;
+    private DBListener myDBListener;
     private DBOpenHelper helper;
     private SQLiteDatabase db;
+    private String servicesIP = "47.100.162.55";
+    //private String servicesIP = "192.168.42.119";
+    //private String servicesIP = "192.168.1.102";
 
+
+    static class MyHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 111:
+                    myUser = (User) msg.obj;
+                    break;
+            }
+        }
+    }
+    MyHandler myHandler = new MyHandler();
+
+
+    private Request request;//网页返回结果
+    public static final MediaType TYPE_OF_JSON = MediaType.parse("application/json; charset=utf-8");
+    public static final MediaType TYPE_OF_PNG = MediaType.parse("image/png");
     private static class DBOpenHelper extends SQLiteOpenHelper {
         //定义student表sql语句
         private static final String CREATE_TABLE_USER = "create table " + TABLE_NAME[0]
                 + " ( " + USER_COLUMNS[0] + " integer primary key autoincrement, "
                 + USER_COLUMNS[1] + " varchar(60) ,"
-                + USER_COLUMNS[2] + " varchar(20) , "
+                //+ USER_COLUMNS[2] + " varchar(20) , "
                 + USER_COLUMNS[3] + " varchar(15) , "
                 + USER_COLUMNS[4] + " char(4), "
                 + USER_COLUMNS[5] + " varchar(50) , "
@@ -143,23 +183,51 @@ public class DBHelper {
         db = helper.getWritableDatabase();// 获得可写的数据库
     }
 
-    //增删改差方法
-    public void insert(User user) {// 向user表格中插入数据
-        ContentValues values = new ContentValues();
-        values.put(USER_COLUMNS[1], user.getUsername());
-        values.put(USER_COLUMNS[2], user.getPassword());
-        values.put(USER_COLUMNS[3], user.getPhoneNum());
-        values.put(USER_COLUMNS[4], user.isSex()?"男":"女");
-        values.put(USER_COLUMNS[5], user.getEmail());
-        values.put(USER_COLUMNS[6], user.getSchool());
-        values.put(USER_COLUMNS[7], user.getIcon());
-        values.put(USER_COLUMNS[8], user.getStuNum());
-        values.put(USER_COLUMNS[9], user.getState());
-        values.put(USER_COLUMNS[10], user.getDormitoryID());
-        values.put(USER_COLUMNS[11], user.getAutograph());
-        db.insert(TABLE_NAME[0], null, values);
+    public DBHelper(Context context, DBListener DBListener){
+        helper = new DBOpenHelper(context);// 创建SQLiteOpenHelper对象
+        db = helper.getWritableDatabase();// 获得可写的数据库
+        myDBListener = DBListener;
     }
 
+    /**
+     * 向本地user表格中插入数据 如果本地存在用户就不更新数据
+     * @param user
+     */
+    public void insert(User user) {
+        if (haveLocalUser(user.getPhoneNum())){
+            update(user);
+        }else{
+            ContentValues values = new ContentValues();
+            values.put(USER_COLUMNS[1], user.getUsername());
+            values.put(USER_COLUMNS[3], user.getPhoneNum());
+            values.put(USER_COLUMNS[4], user.getSex());
+            values.put(USER_COLUMNS[5], user.getEmail());
+            values.put(USER_COLUMNS[6], user.getSchool());
+            values.put(USER_COLUMNS[7], user.getUserIcon());
+            values.put(USER_COLUMNS[8], user.getStuNum());
+            values.put(USER_COLUMNS[9], user.getState());
+            values.put(USER_COLUMNS[10], user.getDormitoryID());
+            values.put(USER_COLUMNS[11], user.getAutograph());
+            db.insert(TABLE_NAME[0], null, values);
+        }
+    }
+
+    /**
+     * 检查是否有登陆过的本地用户
+     * @param phoneNum
+     * @return true代表存在本地user用户 false表示没有
+     */
+    public  Boolean haveLocalUser(String phoneNum){
+        String sql = "select * from User where phoneNum=?";
+        Cursor cursor = db.rawQuery(sql, new String[]{phoneNum});
+        if (cursor.moveToFirst()){
+            cursor.close();
+            return true;
+        }else {
+            cursor.close();
+            return false;
+        }
+    }
     public void insert(Student student) {// 向student表格中插入数据
         ContentValues values = new ContentValues();
         values.put(STUDENT_COLUMNS[0], student.getStuNum());
@@ -167,6 +235,7 @@ public class DBHelper {
         values.put(STUDENT_COLUMNS[2], student.getClassName());
         values.put(STUDENT_COLUMNS[3], student.getStuPassword());
         db.insert(TABLE_NAME[1], null, values);
+        okhttpStudentRegisterPost(JSON.toJSONString(student));
     }
 
     public void insert(Timetable timetable){
@@ -226,7 +295,7 @@ public class DBHelper {
 
     }
 
-    public void insert(Schedule schedule) {// 向student表格中插入数据
+    public void insert(Schedule schedule) {// 向schedule表格中插入数据
         ContentValues values = new ContentValues();
         values.put(SCHEDULE_COLUMNS[1], schedule.getDay());
         values.put(SCHEDULE_COLUMNS[2], schedule.getType());
@@ -238,38 +307,13 @@ public class DBHelper {
         db.insert(TABLE_NAME[3], null, values);
     }
 
-    public Boolean checkHavePhoneNum(String phoneNum){//查询手机号是否被注册
-        Cursor cursor = db.rawQuery("select phoneNum from User where phoneNum=?", new String[]{phoneNum});
-        if (cursor.moveToFirst()){
-            Toast.makeText(MyApplication.getContext(), "该手机号已经被注册！", Toast.LENGTH_SHORT).show();
-            cursor.close();
-            return false;
-        }else{
-            cursor.close();
-            return true;
-        }
-
-    }
-
-    public Boolean checkHaveUser(User user){//查询手机号和密码是否匹配
-        String phoneNum = user.getPhoneNum();
-        String password = user.getPassword();
-        Cursor cursor = db.rawQuery("select phoneNum from User where phoneNum=? and password=?", new String []{phoneNum,password});
-        if (cursor.moveToFirst()){
-            cursor.close();
-            return true;
-        }else{
-            cursor.close();
-            return false;
-        }
-
-    }
 
     public String forgetPassword(User user){//查询手机号和学号是否匹配
         String password;
         String phoneNum = user.getPhoneNum();
         String stuNum = user.getStuNum();
-        Cursor cursor = db.rawQuery("select password from User where phoneNum=? and stuNum=?", new String[]{phoneNum,stuNum});
+        String sql = "select password from User where phoneNum=? and stuNum=?";
+        Cursor cursor = db.rawQuery(sql, new String[]{phoneNum,stuNum});
         if (cursor.moveToFirst()){
             password = cursor.getString(cursor.getColumnIndex("password"));
             cursor.close();
@@ -280,21 +324,239 @@ public class DBHelper {
     }
 
 
+//    private static final String[] USER_COLUMNS = { " id","username", "password", "name", "sex", "studentNum", "phoneNum", "email", "school", "state", "dormitoryID"};
+
+
+    /**
+     * 登录方法 该不是在主线程中进行
+     * @param pwd pwd对象
+     */
+    public void login(Pwd pwd){
+        okhttpUserLoginPost(JSON.toJSONString(pwd));
+    }
+    /**
+     * 注册方法 该不是在主线程中进行
+     * @param pwd pwd对象
+     */
+    public void register(Pwd pwd){
+        okhttpUserRegisterPost(JSON.toJSONString(pwd));
+    }
+
+    /**
+     * 向服务器请求 用户登录的post方法
+     * @param jsonString json格式的String对象
+     */
+    public void okhttpUserLoginPost(String jsonString){
+        String url = "http://"+servicesIP+":8080/DormitoryFun/login";
+        OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
+        RequestBody body = RequestBody.create(TYPE_OF_JSON, jsonString);
+        Request request = new Request.Builder().post(body).url(url).build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("DBHelper","服务器凉了");
+
+                return;
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                onResponseToUserLogin(call, response);
+
+            }
+        });
+    }
+    /**
+     * 向服务器请求 用户注册的post方法
+     * @param jsonString json格式的String对象
+     */
+    private void okhttpUserRegisterPost(String jsonString) {
+        String url = "http://"+servicesIP+":8080/DormitoryFun/register";
+        OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
+        RequestBody body = RequestBody.create(TYPE_OF_JSON, jsonString);
+        Request request = new Request.Builder().post(body).url(url).build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("DBHelper","服务器凉了");
+                return;
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                onResponseToUserRegister(call, response);
+
+            }
+        });
+    }
+
+    /**
+     * 向服务器请求 用户注册的post方法
+     * @param jsonString json格式的String对象
+     */
+    private void okhttpStudentRegisterPost(String jsonString) {
+        String url = "http://"+servicesIP+":8080/DormitoryFun/studentImformation";
+        OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
+        RequestBody body = RequestBody.create(TYPE_OF_JSON, jsonString);
+        Request request = new Request.Builder().post(body).url(url).build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("DBHelper","服务器凉了");
+                return;
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //学生信息注册成功
+                Log.e("StudentRegister","学生信息注册成功");
+            }
+        });
+    }
+
+    public void okhttpChangeUserImformationPost(User user){
+        String url = "http://"+servicesIP+":8080/DormitoryFun/changeImfor";
+        OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
+        RequestBody body = RequestBody.create(TYPE_OF_JSON, JSON.toJSONString(user));
+        Request request = new Request.Builder().post(body).url(url).build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("DBHelper","服务器凉了");
+                return;
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //学生信息注册成功
+                //byte bytes[] = response.body().bytes();
+                //String jsonStr = new String(bytes);
+                String jsonStr = response.body().string();
+                JSONObject jsonObject = JSONObject.parseObject(jsonStr);
+                JSON json = (JSON) JSON.toJSON(jsonObject);
+                MessagAndObject messagAndObject = JSON.toJavaObject(json, MessagAndObject.class);
+                if (messagAndObject.getResultCode().equals("0")) {
+                    return;
+                }
+                else if(messagAndObject.getResultCode().equals("1")) {
+                    myUser = messagAndObject.getData();
+                    myDBListener.doNetRequestChange(myUser);
+                }
+            }
+        });
+    }
+
+
+
+    public void okhttpChangeUserIconPost(final User user, File icon){
+        String url = "http://"+servicesIP+":8080/DormitoryFun/changeUserIcon";
+        OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
+        /*设置超时时间及缓存
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .cache(new Cache(sdcache.getAbsoluteFile(), cacheSize));
+        */
+        //RequestBody body = RequestBody.create(TYPE_OF_PNG, new File(imagePath));
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("phoneNum", user.getPhoneNum())//设置post的参数
+                .addFormDataPart("image", "0.png", RequestBody.create(TYPE_OF_PNG, icon))
+                .build();
+        Request request = new Request.Builder().post(requestBody).url(url).build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("DBHelper","服务器凉了");
+                return;
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //学生信息注册成功
+                //byte bytes[] = response.body().bytes();
+                //String jsonStr = new String(bytes);
+                String jsonStr = response.body().string();
+                JSONObject jsonObject = JSONObject.parseObject(jsonStr);
+                JSON json = (JSON) JSON.toJSON(jsonObject);
+                MessagAndObject messagAndObject = JSON.toJavaObject(json, MessagAndObject.class);
+                if (messagAndObject.getResultCode().equals("0")) {
+                    return;
+                }
+                else if(messagAndObject.getResultCode().equals("1")) {
+                    myUser = messagAndObject.getData();
+                    myDBListener.doNetRequestChange(myUser);
+                }
+            }
+        });
+    }
+
+    /**
+     * onResponse服务器登录请求成功调用的方法
+     * @param call
+     * @param response
+     * @throws IOException
+     */
+    private void onResponseToUserLogin(Call call, Response response) throws IOException {
+        String responseBody = response.body().string();
+        Log.e("DBHelper","from onResponseToUserLogin:"+responseBody);
+        JSONObject jsonObject = JSONObject.parseObject(responseBody);
+        JSON json = (JSON) JSON.toJSON(jsonObject);
+        myUser = JSON.toJavaObject(json, User.class);
+        //java.lang.ClassCastException: com.alibaba.fastjson.JSONObject cannot be cast to com.example.doctorfive.entity.User
+        myDBListener.doNetRequestChange(myUser);
+    }
+
+    /**
+     * onResponse服务器注册请求成功调用的方法
+     * @param call
+     * @param response
+     * @throws IOException
+     */
+    private void onResponseToUserRegister(Call call, Response response) throws IOException {
+        String responseBody = response.body().string();
+        Log.e("DBHelper","from onResponseToUserRegister:"+responseBody);
+        //“1”表示注册成功 “0”表示注册失败
+        if (responseBody.equals("1")){
+            //这里回调接口 RegisterActivity实现的接口
+            myDBListener.doNetRequestChange(new User());
+        }else {
+            myDBListener.doNetRequestChange(null);
+        }
+    }
+
+
+    /**
+     * 外部调用DBHelper的网络操作 需要实现的回调接口
+     */
+    public interface DBListener {
+        void doNetRequestChange(User user);
+
+    }
+
+    public User getMyUser() {
+        return myUser;
+    }
+
     public User export(User user) {//bianlishuju
         String phoneNum = user.getPhoneNum();
-        Cursor cursor = db.rawQuery("select * from User where phoneNum=?", new String[]{phoneNum});
+        String sql = "select * from User where phoneNum=?";
+        Cursor cursor = db.rawQuery(sql, new String[]{phoneNum});
         if(cursor.moveToFirst()) {
             user.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex("user_id"))));
             user.setUsername(cursor.getString(cursor.getColumnIndex("username")));// android.database.CursorIndexOutOfBoundsException: Index 0 requested, with a size of 0
-            user.setPassword(cursor.getString(cursor.getColumnIndex("password")));
+            //user.setPassword(cursor.getString(cursor.getColumnIndex("password")));
             user.setPhoneNum(cursor.getString(cursor.getColumnIndex("phoneNum")));
-            if (cursor.getString(cursor.getColumnIndex("sex")).equals("男"))
-                user.setSex(true);
-            else
-                user.setSex(false);
+            user.setSex(cursor.getString(cursor.getColumnIndex("sex")));
             user.setEmail(cursor.getString(cursor.getColumnIndex("email")));
             user.setSchool(cursor.getString(cursor.getColumnIndex("school")));
-            user.setIcon(cursor.getString(cursor.getColumnIndex("userIcon")));
+            user.setUserIcon(cursor.getString(cursor.getColumnIndex("userIcon")));
             user.setStuNum(cursor.getString(cursor.getColumnIndex("stuNum")));
             user.setState(Integer.parseInt(cursor.getString(cursor.getColumnIndex("state"))));
             user.setDormitoryID(cursor.getString(cursor.getColumnIndex("dormitoryID")));
@@ -304,19 +566,18 @@ public class DBHelper {
         }else
         {
             cursor.close();
-            Toast.makeText(MyApplication.getContext(),"未知错误",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MyApplication.getContext(),"未知错误",Toast.LENGTH_SHORT).show();
+            Log.e("DBHelper--User--export","本地用户为空");
             return user;
         }
     }
 
-
-
-
     public Student export(Student student){
         String stuNum = student.getStuNum();
-        if (stuNum==null)
+        if (stuNum==null||stuNum=="")
             return null;
-        Cursor cursor = db.rawQuery("select * from Student where studentNum=?", new String[]{stuNum});
+        String sql = "select * from Student where studentNum=?";
+        Cursor cursor = db.rawQuery(sql, new String[]{stuNum});
         if(cursor.moveToFirst()) {
             student.setStuNum(cursor.getString(cursor.getColumnIndex("studentNum")));// android.database.CursorIndexOutOfBoundsException: Index 0 requested, with a size of 0
             student.setName(cursor.getString(cursor.getColumnIndex("name")));
@@ -327,7 +588,8 @@ public class DBHelper {
         }else
         {
             cursor.close();
-            Toast.makeText(MyApplication.getContext(),"未知错误",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MyApplication.getContext(),"export--未知错误",Toast.LENGTH_SHORT).show();
+            Log.e("DBHelper--export():", " student本地数据为空");
             return null;
         }
     }
@@ -335,7 +597,8 @@ public class DBHelper {
     public Timetable export(String stuNum, int term){
         Timetable timetable = new Timetable();
         Log.e("DBHelper",stuNum+" "+String.valueOf(term));
-        Cursor cursor = db.rawQuery("select * from Timetable where stuNum=? and term=?", new String[]{stuNum,String.valueOf(term)});
+        String sql = "select * from Timetable where stuNum=? and term=?";
+        Cursor cursor = db.rawQuery(sql, new String[]{stuNum,String.valueOf(term)});
         if(cursor.moveToFirst()) {
             timetable.setId(cursor.getInt(cursor.getColumnIndex("class_id")));
             timetable.setClass1(cursor.getString(cursor.getColumnIndex("class1")));
@@ -401,7 +664,8 @@ public class DBHelper {
     }
 
     public Schedule export(int scheduleId){
-        Cursor cursor = db.rawQuery("select * from Schedule where schedule_id=?", new String[]{String.valueOf(scheduleId)});
+        String sql = "select * from Schedule where schedule_id=?";
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(scheduleId)});
         if (cursor.moveToFirst()){
             Schedule schedule = new Schedule();
             schedule.setId(cursor.getInt(cursor.getColumnIndex("schedule_id")));
@@ -421,26 +685,29 @@ public class DBHelper {
     }
 
     public Schedule export(Schedule schedule){
-        Cursor cursor = db.rawQuery("select * from Schedule where user_id=?", new String[]{String.valueOf(schedule.getUserID())});
+        String sql = "select * from Schedule where user_id=?";
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(schedule.getUserID())});
         if (cursor.moveToLast()) {
-             do {
-                 schedule.setId(cursor.getInt(cursor.getColumnIndex("schedule_id")));
-                 schedule.setDay(cursor.getString(cursor.getColumnIndex("day")));
-                 schedule.setType(cursor.getString(cursor.getColumnIndex("type")));
-                 schedule.setTitle(cursor.getString(cursor.getColumnIndex("title")));
-                 schedule.setStartTime(cursor.getString(cursor.getColumnIndex("startTime")));
-                 schedule.setRemindTime(cursor.getString(cursor.getColumnIndex("overtime")));
-                 schedule.setRemarks(cursor.getString(cursor.getColumnIndex("remarks")));
-                 schedule.setUserID(cursor.getInt(cursor.getColumnIndex("user_id")));
+            do {
+                schedule.setId(cursor.getInt(cursor.getColumnIndex("schedule_id")));
+                schedule.setDay(cursor.getString(cursor.getColumnIndex("day")));
+                schedule.setType(cursor.getString(cursor.getColumnIndex("type")));
+                schedule.setTitle(cursor.getString(cursor.getColumnIndex("title")));
+                schedule.setStartTime(cursor.getString(cursor.getColumnIndex("startTime")));
+                schedule.setRemindTime(cursor.getString(cursor.getColumnIndex("overtime")));
+                schedule.setRemarks(cursor.getString(cursor.getColumnIndex("remarks")));
+                schedule.setUserID(cursor.getInt(cursor.getColumnIndex("user_id")));
             }while (cursor.moveToNext());
         }
         cursor.close();
         return schedule;
     }
+
     public List<Schedule> export(int user_id, String date){
         List<Schedule> scheduleList = new ArrayList<>();
 
-        Cursor cursor = db.rawQuery("select * from Schedule where user_id=? and day=?", new String[]{String.valueOf(user_id), date});
+        String sql = "select * from Schedule where user_id=? and day=?";
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(user_id), date});
         if (cursor.moveToFirst()) {
             do {
                 Schedule schedule = new Schedule();
@@ -458,57 +725,43 @@ public class DBHelper {
         cursor.close();
         return scheduleList;
     }
-
     public void update(String phoneNum, String stuNum){
         //更新学号
         //String phoneNum = user.getPhoneNum();
-        Cursor cursor = db.rawQuery("select phoneNum from User where phoneNum=?", new String[]{phoneNum});
+        String sql_1 = "select phoneNum from User where phoneNum=?";
+        Cursor cursor = db.rawQuery(sql_1, new String[]{phoneNum});
         if (cursor.moveToFirst()){
-            db.execSQL("update User set stuNum=? where phoneNum=?",new String[] {stuNum,phoneNum});
+            String sql_2 = "update User set stuNum=? where phoneNum=?";
+            db.execSQL(sql_2,new String[] {stuNum,phoneNum});
         }else {
             Toast.makeText(MyApplication.getContext(), "凉凉", Toast.LENGTH_SHORT).show();
         }
     }
-//"user_id","username", "password", "phoneNum" , "sex", "email", "school", "userIcon", "stuNum","state", "dormitoryID"
+
     public void update(User user){
         //更新用户信息
         String username = user.getUsername();
         String phoneNum = user.getPhoneNum();
-        String userIcon = user.getIcon();
+        String userIcon = user.getUserIcon();
         String stuNum = user.getStuNum();
-        String sex = user.isSex()?"男":"女";
+        String sex = user.getSex();
         String email = user.getEmail();
         String school = user.getSchool();
         String autograph = user.getAutograph();
-        Cursor cursor = db.rawQuery("select phoneNum from User where phoneNum=?", new String[]{phoneNum});
+        int state = user.getState();
+        String dormitoryID = user.getDormitoryID();
+        String sql_1 = "select phoneNum from User where phoneNum=?";
+        Cursor cursor = db.rawQuery(sql_1, new String[]{phoneNum});
         if (cursor.moveToFirst()){
-            db.execSQL("update User set username=?, userIcon=?, stuNum=?, sex=?, email=?, school=?, autograph=?  where phoneNum=?",new String[] {username, userIcon, stuNum, sex, email,school,autograph, phoneNum});
+            String sql_2 = "update User set username=?, userIcon=?, stuNum=?, sex=?, email=?, school=?, autograph=?, state=?, dormitoryID=?  where phoneNum=?";
+            db.execSQL(sql_2,new String[] {username, userIcon, stuNum, sex, email,school,autograph, String.valueOf(state), dormitoryID, phoneNum});
             Log.e("DB",username+phoneNum+userIcon+stuNum+sex+email+school+autograph);
+            cursor.close();
         }else {
             Log.e("DBHelper_updata_user","emmm");
+            cursor.close();
         }
     }
 
 
-
-//    private static final String[] USER_COLUMNS = { " id","username", "password", "name", "sex", "studentNum", "phoneNum", "email", "school", "state", "dormitoryID"};
-
-    public SQLiteDatabase getDb(){
-        return db;
-    }
 }
-
-/*
-private static final String CREATE_TABLE_USER = "create table " + TABLE_NAME[0]
-                + " ( " + USER_COLUMNS[0] + " integer primary key autoincrement, "
-                + USER_COLUMNS[1] + " varchar(60) default '傻逼',"
-                + USER_COLUMNS[2] + " varchar(20), "
-                + USER_COLUMNS[3] + " varchar(15), "
-                + USER_COLUMNS[4] + " char(4) default '女', "
-                + USER_COLUMNS[5] + " varchar(50) default 'xxx@null.com', "
-                + USER_COLUMNS[6] + " varchar(50) default '江西师范大学', "
-                + USER_COLUMNS[7] + " varchar(256) default 'null', "
-                + USER_COLUMNS[8] + " char(12) default 'null', "
-                + USER_COLUMNS[9] + " integer default 1, "
-                + USER_COLUMNS[10] + " integer default 0);";// 定义创建user表格的SQL语句
- */

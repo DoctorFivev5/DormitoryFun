@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.doctorfive.base.BaseActivity;
 import com.example.doctorfive.dormitoryfun.R;
 
 /**
@@ -14,7 +15,7 @@ import com.example.doctorfive.dormitoryfun.R;
  * 第一次打开界面
  */
 
-public class FirstOpen extends Activity{
+public class FirstOpen extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

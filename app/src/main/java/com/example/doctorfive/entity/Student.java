@@ -12,6 +12,7 @@ public class Student implements Serializable {
     private String name;
     private String className;
     private String stuPassword;
+    private String phoneNum;
     //private String timetableID;//课程表id外键
 
 
@@ -47,6 +48,14 @@ public class Student implements Serializable {
 
     public void setStuPassword(String stuPassword) {
         this.stuPassword = stuPassword;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 }
 

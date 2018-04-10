@@ -9,13 +9,13 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     private int id;
-    private String username;//用户名
-    private String password;//密码
     private String phoneNum;//手机号
-    private boolean sex;//性别
+    private String username;//用户名
+    //private String password;//密码
+    private String sex;//性别
     private String email;//电子邮箱
     private String school;//学校
-    private String icon;//头像路径
+    private String userIcon;//头像路径
     private String stuNum;//学号
     private int state; //状态
     private String  dormitoryID;//房间号
@@ -41,6 +41,7 @@ public class User implements Serializable {
         this.username = username;
     }
 
+    /*
     public String getPassword() {
         return password;
     }
@@ -48,7 +49,7 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-
+    */
     public String getPhoneNum() {
         return phoneNum;
     }
@@ -57,11 +58,11 @@ public class User implements Serializable {
         this.phoneNum = phoneNum;
     }
 
-    public boolean isSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(boolean sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 
@@ -89,12 +90,12 @@ public class User implements Serializable {
         this.state = state;
     }
 
-    public String getIcon() {
-        return icon;
+    public String getUserIcon() {
+        return userIcon;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setUserIcon(String userIcon) {
+        this.userIcon = userIcon;
     }
 
     public String getStuNum() {
@@ -119,5 +120,9 @@ public class User implements Serializable {
 
     public void setAutograph(String autograph) {
         this.autograph = autograph;
+    }
+
+    public String printUser(){
+        return getId()+getUsername()+getUserIcon()+getAutograph()+getDormitoryID()+getEmail()+getPhoneNum()+getSchool()+getSex()+getStuNum()+getState();
     }
 }

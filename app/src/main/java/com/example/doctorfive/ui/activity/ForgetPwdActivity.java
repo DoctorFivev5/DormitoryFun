@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.doctorfive.base.BaseActivity;
 import com.example.doctorfive.base.MyApplication;
 import com.example.doctorfive.db.DBHelper;
 import com.example.doctorfive.dormitoryfun.R;
@@ -21,7 +22,7 @@ import static com.example.doctorfive.util.CheckoutDataUtil.isPhoneNum;
  * 忘记密码，找回密码界面
  */
 
-public class ForgetPwdActivity extends Activity{
+public class ForgetPwdActivity extends BaseActivity {
     private EditText phoneNum;
     private EditText stuNum;
     //private EditText email;

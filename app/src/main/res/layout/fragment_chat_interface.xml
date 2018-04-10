@@ -29,7 +29,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center_horizontal|center_vertical"
-            android:text="聊天"
+            android:text="消息"
             android:textColor="#000000"
             android:textSize="26sp" />
 

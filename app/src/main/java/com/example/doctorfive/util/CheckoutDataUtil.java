@@ -23,7 +23,7 @@ public class CheckoutDataUtil {
             Toast.makeText(MyApplication.getContext(),"手机号不能为空！",Toast.LENGTH_SHORT).show();
             return false;
         }else {
-            if (mobiles.matches(phoneNum_Z)&&dbHelper.checkHavePhoneNum(phoneNum_Z))
+            if (mobiles.matches(phoneNum_Z))
                 return true;
             else {
                 Toast.makeText(MyApplication.getContext(), "请输入正确的手机号！", Toast.LENGTH_SHORT).show();
@@ -32,17 +32,19 @@ public class CheckoutDataUtil {
         }
     }
 
+    /*
     public static boolean isRegister(String mobiles) {//判断手机号是否正确且是否被注册
         if(isPhoneNum(mobiles)&&dbHelper.checkHavePhoneNum(mobiles)){
             return true;
         }else
             return false;
     }
-
+    */
+    /*
     public static boolean isLogin(User user) {//判断手机号是否正确且帐号密码是否匹配
         String phoneNum = user.getPhoneNum();
         if(isPhoneNum(phoneNum)){
-            if (dbHelper.checkHaveUser(user))
+            if (dbHelper.login(user))
                 return true;
             else {
                 Toast.makeText(MyApplication.getContext(),"帐号或密码错误！",Toast.LENGTH_SHORT).show();
@@ -51,6 +53,7 @@ public class CheckoutDataUtil {
         }else
             return false;
     }
+    */
 
     public boolean forgetPassword(User user){
         String phoneNum = user.getPhoneNum();
@@ -67,7 +70,7 @@ public class CheckoutDataUtil {
 
     }
 
-    public static boolean isPasswordO(String password) {
+    public static boolean isPasswordStyle(String password) {
 
         if (TextUtils.isEmpty(password)){
             Toast.makeText(MyApplication.getContext(),"请输入密码！",Toast.LENGTH_SHORT).show();

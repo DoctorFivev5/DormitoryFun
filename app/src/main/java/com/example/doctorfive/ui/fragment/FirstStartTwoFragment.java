@@ -6,17 +6,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.doctorfive.dormitoryfun.R;
 
-
 /**
- * A simple {@link Fragment} subclass.
+ *
  */
-public class ChatInterface extends Fragment {
+public class FirstStartTwoFragment extends Fragment {
 
+    //private ImageView imageView;
 
-    public ChatInterface() {
+    public FirstStartTwoFragment() {
         // Required empty public constructor
     }
 
@@ -25,7 +26,9 @@ public class ChatInterface extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat_interface, container, false);
+        View view = inflater.inflate(R.layout.fragment_first_start_two, container, false);
+        //imageView = view.findViewById(R.id.first_start_two_image);
+        return view;
     }
 
 }

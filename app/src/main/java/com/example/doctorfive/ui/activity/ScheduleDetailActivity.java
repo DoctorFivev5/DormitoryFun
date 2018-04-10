@@ -6,12 +6,17 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.doctorfive.base.BaseActivity;
 import com.example.doctorfive.db.DBHelper;
 import com.example.doctorfive.dormitoryfun.R;
 import com.example.doctorfive.entity.Schedule;
 import com.example.doctorfive.entity.ScheduleItem;
 
-public class ScheduleDetailActivity extends AppCompatActivity {
+/**
+ * 日程详情页面
+ */
+
+public class ScheduleDetailActivity extends BaseActivity {
     private int myScheduleItemId;
     private Schedule mySchedule;
     private DBHelper myDBHelper;

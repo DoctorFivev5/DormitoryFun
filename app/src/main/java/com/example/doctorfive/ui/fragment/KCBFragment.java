@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
+ * tab课表 显示界面
  */
 public class KCBFragment extends Fragment implements View.OnClickListener {
     private DBHelper dbHelper;
@@ -120,6 +120,7 @@ public class KCBFragment extends Fragment implements View.OnClickListener {
     private List<String> init() {
         List<String> list = new ArrayList<String>();
         for (String k : kcb){
+            k = k.replaceAll("-","");
             list.add(k);
         }
         return list;
@@ -129,7 +130,7 @@ public class KCBFragment extends Fragment implements View.OnClickListener {
         contents = new String[7][7];
         for (int i = 0; i < 7; i++){
             for (int j = 0; j < 7; j++){
-                contents[i][j] = kcb[i*7+j];
+                contents[i][j] = kcb[i*7+j].replaceAll("-","");
             }
         }
     }

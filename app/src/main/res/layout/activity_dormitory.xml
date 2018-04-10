@@ -12,17 +12,36 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="我的宿舍啥人都没有"
+        android:text="我的宿舍"
         android:textSize="24sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/home"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="157dp" />
+    <com.example.doctorfive.weight.MoveImage
+        android:id="@+id/user_icon_one"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+
+        android:scaleType="matrix"/>
+
+    <com.example.doctorfive.weight.MoveImage
+        android:id="@+id/user_icon_two"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+
+        android:scaleType="matrix"/>
+
+    <com.example.doctorfive.weight.MoveImage
+        android:id="@+id/user_icon_three"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:scaleType="matrix"/>
+    <com.example.doctorfive.weight.MoveImage
+        android:id="@+id/user_icon_four"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+
+        android:scaleType="matrix"/>
 </RelativeLayout>

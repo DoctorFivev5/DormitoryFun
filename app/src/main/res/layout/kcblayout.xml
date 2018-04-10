@@ -70,6 +70,17 @@
             android:textSize="16sp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
+        <!--<Spinner
+            android:id="@+id/fragment_kcb_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical"
+            android:textColor="#000000"
+            android:text="大三第一学期"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />-->
+
 
         <ImageButton
             android:id="@+id/fragment_kcb_right"

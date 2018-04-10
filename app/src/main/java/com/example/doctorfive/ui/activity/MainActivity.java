@@ -1,56 +1,42 @@
 package com.example.doctorfive.ui.activity;
 
-
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.GravityCompat;
 
-import android.support.v4.widget.DrawerLayout;
-
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
-import com.bumptech.glide.Glide;
-import com.example.doctorfive.base.MyApplication;
+import com.example.doctorfive.base.BaseActivity;
 import com.example.doctorfive.db.DBHelper;
 import com.example.doctorfive.dormitoryfun.R;
 import com.example.doctorfive.entity.Student;
 import com.example.doctorfive.entity.User;
-import com.example.doctorfive.ui.fragment.ChatInterface;
+import com.example.doctorfive.ui.fragment.ChatFragment;
 import com.example.doctorfive.ui.fragment.KCBFragment;
-import com.example.doctorfive.ui.fragment.MyInterface;
-import com.example.doctorfive.ui.fragment.ScheduleInterface;
-import com.example.doctorfive.ui.fragment.TimetableInterface;
-import com.example.doctorfive.util.CircleCropUtil;
+import com.example.doctorfive.ui.fragment.MyFragment;
+import com.example.doctorfive.ui.fragment.ScheduleFragment;
+import com.example.doctorfive.ui.fragment.TimetableFragment;
 
+/**
+ * 4个tab fragment依附的主界面
+ */
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener ,TimetableInterface.FragmentInteraction{
+public class MainActivity extends BaseActivity implements View.OnClickListener ,TimetableFragment.FragmentInteraction{
     private DBHelper mDBHelper;  //数据库操作对象
-    private DrawerLayout mDrawerLayout;//该界面的总布局
+    //private DrawerLayout mDrawerLayout;//该界面的总布局
     //private ShareActionProvider mShareActionProvider;//系统自带ActionProvider--ShareActionProvider
     //private MyActionProvider mMyActionProvider;//自定义MyActionProvider;
     private User user;//User实体
@@ -59,11 +45,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Bundle bundle;
 
     //private Toolbar toolbar;        //顶部导航栏
-    private ChatInterface chatFragment;         //聊天界面Fragment
-    private ScheduleInterface scheduleFragment;    //日程界面Fragment
-    private TimetableInterface timetableFragment;   //课表登录界面Fragment
+    private ChatFragment chatFragment;         //聊天界面Fragment
+    private ScheduleFragment scheduleFragment;    //日程界面Fragment
+    private TimetableFragment timetableFragment;   //课表登录界面Fragment
     private KCBFragment kcbFragment;        //课表界面Fragment
-    private MyInterface myFragment;           //我的界面Fragment
+    private MyFragment myFragment;           //我的界面Fragment
     private View chatLayout;        //下方聊天界面导航栏布局
     private View scheduleLayout;   //下方日程界面导航栏布局
     private View timetableLayout;  //下方课表界面导航栏布局
@@ -77,83 +63,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView timetableText; //在Tab布局上显示课表标题的控件
     private TextView myText;         //在Tab布局上显示我的标题的控件
     private FragmentManager fragmentManager; //用于对Fragment进行管理
-    //private NavigationView navigationView;  //侧滑栏
-    //private View headerView;//navigationView内的头部控件
-    //private RelativeLayout insertLayout;//获取navigationView内的头部布局
-    //private ImageView headerBG;
-    //private ImageView headerIcon;
-    //private TextView headerName;
-    //private TextView headerMessage;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);//无标题
-        //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main_layout);
-
         initViews();//初始化布局
         initValue();//实体赋值
         setTabSelection(0);//选择fragment初始界面
-        //loadingHeaderIcon();//加载头像
-        /*
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.menu);
-        }
-        */
-        //头像点击事件
-        /*
-        insertLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,PersonalInformation.class);
-                Bundle bundle = new Bundle();
-                bundle.putCharSequence("phoneNum", user.getPhoneNum());
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
-        */
 
-        /*
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                SharedPreferences.Editor editor = getSharedPreferences("userPwd",MODE_PRIVATE).edit();
-                switch (item.getItemId()){
-                    case R.id.personal_information://个人信息页面
-                        Toast.makeText(MyApplication.getContext(),"有点问题",Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.cancel://关闭主界面转到登录界面
-                        editor.putBoolean("clear",false);
-                        editor.apply();
-                        Intent in2 = new Intent(MainActivity.this,LoginActivity.class);
-                        startActivity(in2);
-                        finish();
-                        Toast.makeText(MyApplication.getContext(),"注销成功！",Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.clear_data://关闭主界面且删除记住的帐号密码转到主界面
-                        editor.putBoolean("clear",false);
-                        editor.putString("phoneNum","");
-                        editor.putString("password","");
-                        editor.apply();
-                        Intent in3 = new Intent(MainActivity.this,LoginActivity.class);
-                        startActivity(in3);
-                        finish();
-                        Toast.makeText(MyApplication.getContext(),"取消自动登录成功！",Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        mDrawerLayout.closeDrawers();//关闭侧滑栏
-                }
-
-                return true;
-            }
-        });//选取任意一项就关闭侧边栏
-        */
     }
 
     //初始化view控件
@@ -173,10 +91,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         timetableText = (TextView) findViewById(R.id.timetable_text);
         myText = (TextView) findViewById(R.id.my_text);
 
-        //toolbar =(Toolbar) findViewById(R.id.toolbar1);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout1);
-        //navigationView = (NavigationView) findViewById(R.id.nav_view);
-        //initNavigationView();
+
+        //mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout1);
+
         chatLayout.setOnClickListener(this);
         scheduleLayout.setOnClickListener(this);
         timetableLayout.setOnClickListener(this);
@@ -185,55 +102,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initValue(){
         mDBHelper = new DBHelper(this);
-        //toolbar.setTitle("");
-        //setSupportActionBar(toolbar);
         fragmentManager = getSupportFragmentManager();
         intent = getIntent();
         bundle = intent.getExtras();
-        user = new User();
-        user.setPhoneNum(bundle.getString("phoneNum"));
-        user = mDBHelper.export(user);
+        //user = new User();
+        //user.setPhoneNum(bundle.getString("phoneNum"));
+        //user = mDBHelper.export(user);
+        user = (User) bundle.getSerializable("myUser");
         student = new Student();
         student.setStuNum(user.getStuNum());
         student = mDBHelper.export(student);
     }
-    /*
-    private void initNavigationView(){
-        headerView = navigationView.getHeaderView(0);//获取navigationView内的布局
-        insertLayout = (RelativeLayout) headerView.findViewById(R.id.nav_header_relarelativelayout);
-        headerBG = (ImageView) headerView.findViewById(R.id.bg);
-        headerIcon =  (ImageView) headerView.findViewById(R.id.icon_image);
-        headerName = (TextView) headerView.findViewById(R.id.name);
-        headerMessage = (TextView) headerView.findViewById(R.id.signature);
-        //headerMessage.setText(user.getStuNum());
-    }
-    */
-    /*
-    private void loadingHeaderIcon(){
-        String map_url = "http://jwc.jxnu.edu.cn/StudentPhoto/"+ user.getStuNum()+".jpg?a=20171124191233";
-        Glide.with(this).load(map_url)
-                .transform(new CircleCropUtil(this))
-                .placeholder(R.drawable.niubi)
-                .into(headerIcon);
-    }
-    */
 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.chat_layout:
-                // 当点击了消息tab时，选中第1个tab
+                // 当点击了聊天tab时，选中第1个tab
                 setTabSelection(0);
                 break;
             case R.id.schedule_layout:
-                // 当点击了联系人tab时，选中第2个tab
+                // 当点击了日程tab时，选中第2个tab
                 setTabSelection(1);
                 break;
             case R.id.timetable_layout:
-                // 当点击了动态tab时，选中第3个tab
+                // 当点击了课程表tab时，选中第3个tab
                 setTabSelection(2);
                 break;
             case R.id.my_layout:
-                // 当点击了设置tab时，选中第4个tab
+                // 当点击了我的设置tab时，选中第4个tab
                 setTabSelection(3);
                 break;
             default:
@@ -255,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 chatText.setTextColor(ResourcesCompat.getColor(getResources(),R.color.skyblue,null));
                 if (chatFragment == null) {
                     // 如果chatFragment为空，则创建一个并添加到界面上
-                    chatFragment = new ChatInterface();
+                    chatFragment = new ChatFragment();
                     transaction.add(R.id.content, chatFragment);
                 } else {
                     // 如果chatFragment不为空，则直接将它显示出来
@@ -268,10 +164,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 scheduleText.setTextColor(ResourcesCompat.getColor(getResources(),R.color.skyblue,null));
                 Bundle bundle1 = new Bundle();
                 bundle1.putInt("user_id",user.getId());
-                Log.e("不会不会","0 "+user.getId());
+                //Log.e("不会不会","0 "+user.getId());
                 if (scheduleFragment == null) {
                     // 如果scheduleFragment为空，则创建一个并添加到界面上
-                    scheduleFragment = new ScheduleInterface();
+                    scheduleFragment = new ScheduleFragment();
                     scheduleFragment.setArguments(bundle1);
                     transaction.add(R.id.content, scheduleFragment);
                 } else {
@@ -286,14 +182,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (student==null||mDBHelper.export(student.getStuNum(),17182)==null) {
                     Bundle bundle2 = new Bundle();
-                    bundle2.putString("phoneNum",user.getPhoneNum());
+                    bundle2.putSerializable("myUser",user);
 
                     if (timetableFragment == null) {
                         // 如果TimetableFragment为空，则创建一个并添加到界面上
-                        timetableFragment = new TimetableInterface();
+                        timetableFragment = new TimetableFragment();
                         timetableFragment.setArguments(bundle2);
                         transaction.add(R.id.content, timetableFragment);
-                        Toast.makeText(MyApplication.getContext(),"选课阶段可能出现查询课表功能无响应，可多尝试几次",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MyApplication.getContext(),"选课阶段可能出现查询课表功能无响应，可多尝试几次",Toast.LENGTH_SHORT).show();
                     } else {
                         // 如果TimetableFragment不为空，则直接将它显示出来
                         transaction.show(timetableFragment);
@@ -323,10 +219,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 myImage.setImageResource(R.drawable.my_unselected);
                 myText.setTextColor(ResourcesCompat.getColor(getResources(),R.color.skyblue,null));
                 Bundle bundle2 = new Bundle();
-                bundle2.putString("phoneNum",user.getPhoneNum());
+                bundle2.putSerializable("myUser",user);
                 if (myFragment == null) {
                     // 如果SettingFragment为空，则创建一个并添加到界面上
-                    myFragment = new MyInterface();
+                    myFragment = new MyFragment();
                     myFragment.setArguments(bundle2);
                     transaction.add(R.id.content, myFragment);
                 } else {
@@ -354,7 +250,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * 将所有的Fragment都置为隐藏状态。
-     *
      * @param transaction
      *            用于对Fragment执行操作的事务
      */
@@ -381,11 +276,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         getMenuInflater().inflate(R.menu.toorbar,menu);
-        //MenuItem deleteItem = menu.findItem(R.id.delete);
-        //MenuItem shareItem = menu.findItem(R.id.setting);
-        //mMyActionProvider = (MyActionProvider ) MenuItemCompat.getActionProvider(deleteItem);//自定义MyActionProvider
-        //mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);//系统自带ActionProvider--ShareActionProvider
-        //mShareActionProvider.setShareIntent(getDefaultIntent());
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -396,28 +286,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                break;
-            case R.id.backup:
-                break;
-            /*
-            case R.id.delete:
-                break;
-            case R.id.setting:
-                break;
-                */
-            default:
-                break;
-        }
-        return true;
-    }//头部导航
-
-    @Override
     public void process(Student student) {
         this.student = student;
         setTabSelection(2);
     }
+
 }
