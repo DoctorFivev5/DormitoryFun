@@ -78,8 +78,8 @@ public class RegisterActivity extends BaseActivity {
 
         myDBListener = new DBHelper.DBListener() {
             @Override
-            public void doNetRequestChange(User user) {
-                if (user==null){
+            public void doNetRequestChange(Object object) {
+                if (object==null){
                     //注册失败
                     Message msg = new Message();
                     msg.what = REGISTERFAIL;
@@ -102,6 +102,7 @@ public class RegisterActivity extends BaseActivity {
         register = (Button) findViewById(R.id.register);
         myUser = new User();
         phoneNum.setText(bundle.getString("username"));
+
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,6 +113,7 @@ public class RegisterActivity extends BaseActivity {
                     if (CheckoutDataUtil.isPasswordStyle(password_1S)){
                         if (password_1S.equals(password_2S)) {
                             dialog.show();
+                            //发送请求
                             myDbHelper.register(new Pwd(phoneNumS, password_2S));
                         } else {
                             Toast.makeText(RegisterActivity.this, "两次密码输入不一致！", Toast.LENGTH_SHORT).show();

@@ -75,7 +75,6 @@ public class PersonalInformation extends BaseActivity implements View.OnClickLis
                 case 111:
                     loadingHeaderIcon(myUser.getUserIcon());
                     dbHelper.update(myUser);
-
                     Log.e("handler",myUser.printUser());
             }
         }
@@ -99,12 +98,12 @@ public class PersonalInformation extends BaseActivity implements View.OnClickLis
     }
 
     private void initView(){//初始化控件
+
         myDBListener = new DBHelper.DBListener() {
             @Override
-            public void doNetRequestChange(User user) {
-                myUser = user;
-                dbHelper.update(user);
-
+            public void doNetRequestChange(Object object) {
+                //dbHelper.update((User)object);
+                myUser = (User)object;
                 Log.e("doNetRequestChange",myUser.printUser());
                 Message message = new Message();
                 message.what = 111;
@@ -216,8 +215,11 @@ public class PersonalInformation extends BaseActivity implements View.OnClickLis
 
     //创建头像存储位置
     private void createNewUserIconFolder(){
+        //定义一个文件存储路径
         File outputImage = new File(getExternalCacheDir(), "usericon.png");
         try{
+            //判断文件路径是否存在
+            //若存在就删除原有文件，若不存在就创建文件
             if (outputImage.exists()){
                 outputImage.delete();
             }
@@ -365,7 +367,7 @@ public class PersonalInformation extends BaseActivity implements View.OnClickLis
     private void displayImage(String imagePath) {
 
         if (imagePath != null){
-            //myUser.setUserIcon(imagePath);
+            //把图片发送给服务端
             dbHelper.okhttpChangeUserIconPost(myUser, new File(getExternalCacheDir(), "usericon.png"));
             Log.e("displayImage",imagePath+" ");
         }else {

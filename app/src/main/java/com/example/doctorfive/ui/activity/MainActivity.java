@@ -45,20 +45,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener ,
     private Bundle bundle;
 
     //private Toolbar toolbar;        //顶部导航栏
-    private ChatFragment chatFragment;         //聊天界面Fragment
+    //private ChatFragment chatFragment;         //聊天界面Fragment
     private ScheduleFragment scheduleFragment;    //日程界面Fragment
     private TimetableFragment timetableFragment;   //课表登录界面Fragment
     private KCBFragment kcbFragment;        //课表界面Fragment
     private MyFragment myFragment;           //我的界面Fragment
-    private View chatLayout;        //下方聊天界面导航栏布局
+    //private View chatLayout;        //下方聊天界面导航栏布局
     private View scheduleLayout;   //下方日程界面导航栏布局
     private View timetableLayout;  //下方课表界面导航栏布局
     private View myLayout;          //下方我的界面导航栏布局
-    private ImageView chatImage;      //在Tab布局上显示聊天图标的控件
+    //private ImageView chatImage;      //在Tab布局上显示聊天图标的控件
     private ImageView scheduleImage; //在Tab布局上显示日程图标的控件
     private ImageView timetableImage;//在Tab布局上显示课表图标的控件
     private ImageView myImage;        //在Tab布局上显示我的图标的控件
-    private TextView chatText;       //在Tab布局上显示聊天标题的控件
+    //private TextView chatText;       //在Tab布局上显示聊天标题的控件
     private TextView scheduleText;  //在Tab布局上显示日程标题的控件
     private TextView timetableText; //在Tab布局上显示课表标题的控件
     private TextView myText;         //在Tab布局上显示我的标题的控件
@@ -70,23 +70,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener ,
         setContentView(R.layout.main_layout);
         initViews();//初始化布局
         initValue();//实体赋值
-        setTabSelection(0);//选择fragment初始界面
+        setTabSelection(3);//选择fragment初始界面
 
     }
 
     //初始化view控件
     private void initViews(){
-        chatLayout = findViewById(R.id.chat_layout);
+        //chatLayout = findViewById(R.id.chat_layout);
         scheduleLayout = findViewById(R.id.schedule_layout);
         timetableLayout = findViewById(R.id.timetable_layout);
         myLayout = findViewById(R.id.my_layout);
 
-        chatImage = (ImageView) findViewById(R.id.chat_image);
+        //chatImage = (ImageView) findViewById(R.id.chat_image);
         scheduleImage = (ImageView) findViewById(R.id.schedule_image);
         timetableImage = (ImageView) findViewById(R.id.timetable_image);
         myImage = (ImageView) findViewById(R.id.my_image);
 
-        chatText = (TextView) findViewById(R.id.chat_text);
+        //chatText = (TextView) findViewById(R.id.chat_text);
         scheduleText = (TextView) findViewById(R.id.schedule_text);
         timetableText = (TextView) findViewById(R.id.timetable_text);
         myText = (TextView) findViewById(R.id.my_text);
@@ -94,7 +94,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener ,
 
         //mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout1);
 
-        chatLayout.setOnClickListener(this);
+        //chatLayout.setOnClickListener(this);
         scheduleLayout.setOnClickListener(this);
         timetableLayout.setOnClickListener(this);
         myLayout.setOnClickListener(this);
@@ -116,10 +116,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener ,
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.chat_layout:
-                // 当点击了聊天tab时，选中第1个tab
-                setTabSelection(0);
-                break;
+//            case R.id.chat_layout:
+//                // 当点击了聊天tab时，选中第1个tab
+//                setTabSelection(0);
+//                break;
             case R.id.schedule_layout:
                 // 当点击了日程tab时，选中第2个tab
                 setTabSelection(1);
@@ -147,17 +147,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener ,
         switch (index) {
             case 0:
                 // 当点击了消息tab时，改变控件的图片和文字颜色
-                chatImage.setImageResource(R.drawable.chat_unselected);
-                chatText.setTextColor(ResourcesCompat.getColor(getResources(),R.color.skyblue,null));
-                if (chatFragment == null) {
-                    // 如果chatFragment为空，则创建一个并添加到界面上
-                    chatFragment = new ChatFragment();
-                    transaction.add(R.id.content, chatFragment);
-                } else {
-                    // 如果chatFragment不为空，则直接将它显示出来
-                    transaction.show(chatFragment);
-                }
-                break;
+                //chatImage.setImageResource(R.drawable.chat_unselected);
+                //chatText.setTextColor(ResourcesCompat.getColor(getResources(),R.color.skyblue,null));
+//                if (chatFragment == null) {
+//                    // 如果chatFragment为空，则创建一个并添加到界面上
+//                    chatFragment = new ChatFragment();
+//                    transaction.add(R.id.content, chatFragment);
+//                } else {
+//                    // 如果chatFragment不为空，则直接将它显示出来
+//                    transaction.show(chatFragment);
+//                }
+//                break;
             case 1:
                 // 当点击了日程tab时，改变控件的图片和文字颜色
                 scheduleImage.setImageResource(R.drawable.schedule_unselected);
@@ -238,8 +238,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener ,
      * 清除掉所有的选中状态。
      */
     private void clearSelection() {
-        chatImage.setImageResource(R.drawable.chat_unselected);
-        chatText.setTextColor(Color.parseColor("#82858b"));
+//        chatImage.setImageResource(R.drawable.chat_unselected);
+//        chatText.setTextColor(Color.parseColor("#82858b"));
         scheduleImage.setImageResource(R.drawable.schedule_unselected);
         scheduleText.setTextColor(Color.parseColor("#82858b"));
         timetableImage.setImageResource(R.drawable.timetable_unselected);
@@ -254,9 +254,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener ,
      *            用于对Fragment执行操作的事务
      */
     private void hideFragments(FragmentTransaction transaction) {
-        if (chatFragment != null) {
-            transaction.hide(chatFragment);
-        }
+//        if (chatFragment != null) {
+//            transaction.hide(chatFragment);
+//        }
         if (scheduleFragment != null) {
             transaction.hide(scheduleFragment);
         }

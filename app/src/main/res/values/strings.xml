@@ -5,5 +5,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-
+    <string name="dormitory_number">寝室号:</string>
+    <string name="dormitor_power_fee">剩余电费</string>
+    <string name="dormitory_power_kwh">剩余电量</string>
+    <string name="create">创建</string>
+    <string name="join_dormitory">加入宿舍</string>
+    <string name="finish">完成</string>
+    <string name="create_dormitory">创建宿舍</string>
 </resources>

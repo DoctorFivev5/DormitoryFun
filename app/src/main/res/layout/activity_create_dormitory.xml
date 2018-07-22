@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/normalbgcolor">
+
+    <LinearLayout
+        android:id="@+id/create_dormitory"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/skyblue">
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/returnimg" />
+
+            <TextView
+                android:id="@+id/create_dormitory_left_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/create_dormitory_right_text"
+                android:layout_alignBottom="@+id/create_dormitory_right_text"
+                android:layout_toEndOf="@+id/imageView"
+                android:text="返回"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/create_dormitory_left_text"
+                android:layout_centerHorizontal="true"
+                android:text="创建宿舍"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/create_dormitory_right_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                android:text="@string/join_dormitory"
+                android:textSize="20sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/create_dormitory"
+        android:background="@color/normallinecolor"/>
+
+
+    <RelativeLayout
+        android:id="@+id/dormitory_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/create_dormitory"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="0dp"
+        android:gravity="center_vertical"
+        android:background="@color/white">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:text="名称"
+            android:id="@+id/dormitory_name1"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp" />
+        <EditText
+            android:id="@+id/dormitory_nametext"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="嘴强宿舍"
+            android:background="@null"
+            android:layout_alignBaseline="@+id/dormitory_name1"
+            android:layout_alignBottom="@+id/dormitory_name1"
+            android:layout_toEndOf="@+id/dormitory_name1"
+            android:layout_marginStart="20dp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120dp"
+            android:src="@drawable/right"
+            android:layout_marginEnd="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/dormitory_name"
+        android:background="@color/normallinecolor"
+        />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="24dp"
+        android:layout_below="@+id/dormitory_name"
+        android:background="@color/normallinecolor" />
+    <RelativeLayout
+        android:id="@+id/dormitory_text"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="25dp"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:layout_below="@+id/dormitory_name"
+        android:layout_alignParentStart="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:text="简介"
+            android:id="@+id/dormitory_text1"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp" />
+        <EditText
+            android:id="@+id/dormitory_texttext"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="啥玩意啊"
+            android:background="@null"
+            android:layout_alignBaseline="@+id/dormitory_text1"
+            android:layout_alignBottom="@+id/dormitory_text1"
+            android:layout_toEndOf="@+id/dormitory_text1"
+            android:layout_marginStart="20dp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120dp"
+            android:src="@drawable/right"
+            android:layout_marginEnd="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+    <!--4-->
+    <View
+        android:id="@+id/view4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/dormitory_text"
+        android:background="@color/normallinecolor"/>
+
+    <RelativeLayout
+        android:id="@+id/dormitory_num"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:layout_below="@+id/view4"
+        android:layout_alignParentStart="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:text="人数"
+            android:id="@+id/dormitory_num1"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp" />
+        <Spinner
+            android:id="@+id/dormitory_num_text"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/dormitory_num"
+            android:textSize="20sp"
+            android:background="@null"
+            android:layout_marginStart="20dp"
+            android:layout_alignBaseline="@+id/dormitory_num1"
+            android:layout_alignBottom="@+id/dormitory_num1"
+            android:layout_toEndOf="@+id/dormitory_num1" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120dp"
+            android:src="@drawable/right"
+            android:layout_marginEnd="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+    <!--5-->
+    <View
+        android:id="@+id/view5"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/dormitory_num"
+        android:background="@color/normallinecolor"/>
+    <!--6-->
+    <View
+        android:id="@+id/view6"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/dormitory_num"
+        android:layout_marginTop="24dp"
+        android:background="@color/normallinecolor" />
+    <RelativeLayout
+        android:id="@+id/dormitory_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:layout_below="@+id/dormitory_num"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="25dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:text="密码"
+            android:id="@+id/dormitory_pwd1"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp" />
+
+        <EditText
+            android:id="@+id/dormitory_pwd_text"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="12dp"
+            android:background="@null"
+            android:inputType="textPassword"
+            android:textSize="20sp" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120dp"
+            android:src="@drawable/right"
+            android:layout_marginEnd="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/dormitory_pwd"
+        android:background="@color/normallinecolor"
+        android:id="@+id/view7" />
+    <RelativeLayout
+        android:id="@+id/dormitory_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:layout_below="@+id/view7"
+        android:layout_alignParentStart="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:text="确认密码"
+            android:id="@+id/dormitory_confirm1"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp" />
+        <EditText
+            android:id="@+id/dormitory_confirm_text"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:inputType="textPassword"
+            android:background="@null"
+            android:layout_alignBaseline="@+id/dormitory_confirm1"
+            android:layout_alignBottom="@+id/dormitory_confirm1"
+            android:layout_toEndOf="@+id/dormitory_confirm1"
+            android:layout_marginStart="20dp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120dp"
+            android:src="@drawable/right"
+            android:layout_marginEnd="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+
+
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/dormitory_confirm"
+        android:background="@color/normallinecolor"
+        android:id="@+id/view8" />
+
+    <View
+        android:id="@+id/view9"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/view8"
+        android:layout_marginTop="25dp"
+        android:background="@color/normallinecolor" />
+    <RelativeLayout
+        android:id="@+id/dormitory"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:layout_below="@+id/view9"
+        android:layout_alignParentStart="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:text="寝室"
+            android:id="@+id/dormitory1"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp" />
+        <EditText
+            android:id="@+id/building_num"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+
+
+            android:layout_alignBaseline="@+id/dormitory1"
+            android:layout_alignBottom="@+id/dormitory1"
+            android:layout_toEndOf="@+id/dormitory1"
+            android:layout_marginStart="20dp" />
+
+        <TextView
+            android:id="@+id/dormitory_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/building_num"
+            android:layout_alignBottom="@+id/building_num"
+            android:layout_toEndOf="@+id/building_num"
+            android:background="@null"
+            android:text="栋"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/dormitory_room"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/dormitory_1"
+            android:layout_alignBottom="@+id/dormitory_1"
+            android:layout_toEndOf="@+id/dormitory_1"
+
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/dormitory_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/dormitory_room"
+            android:layout_alignBottom="@+id/dormitory_room"
+            android:layout_toEndOf="@+id/dormitory_room"
+            android:background="@null"
+            android:text="室"
+            android:textSize="20sp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120dp"
+            android:src="@drawable/right"
+            android:layout_marginEnd="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/create_dormitory_finish"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dormitory"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:background="@color/skyblue"
+        android:textSize="@dimen/normal_size"
+        android:text="@string/create" />
+
+
+</RelativeLayout>

@@ -18,7 +18,9 @@ import com.example.doctorfive.ui.activity.MoneyActivity;
 import com.example.doctorfive.ui.activity.PowerActivity;
 
 import java.util.List;
-
+/**
+ * Created by DoctorFive on 2018/1/5.
+ */
 public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.ViewHolder>  {
 
     private List<Optionitem> optionitemList;
@@ -27,9 +29,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         this.optionitemList = optionitemList;
     }
 
-    /**
-     * Created by DoctorFive on 2018/1/5.
-     */
+
 
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private View optionView;

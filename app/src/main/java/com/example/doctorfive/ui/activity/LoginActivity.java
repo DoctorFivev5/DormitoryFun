@@ -75,27 +75,27 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         initDialog();
         //dialog.show();
         myDBListener = new DBHelper.DBListener() {
-        @Override
-        public void doNetRequestChange(User user) {
-            //dialog.cancel();
-            String  phoneNumS1 = phoneNum.getText().toString();
-            String  passwordS1 = password.getText().toString();
-            myUser = myDbHelper.getMyUser();
-            Message msg = new Message();
-            if (myUser==null){
-                msg.what = LODINGFAILED;
-                myHandler.sendMessage(msg);
-                return;
+            @Override
+            public void doNetRequestChange(Object object) {
+                //dialog.cancel();
+                String  phoneNumS1 = phoneNum.getText().toString();
+                String  passwordS1 = password.getText().toString();
+                myUser = myDbHelper.getMyUser();
+                Message msg = new Message();
+                if (myUser==null){
+                    msg.what = LODINGFAILED;
+                    myHandler.sendMessage(msg);
+                    return;
 
-            }else {
-                msg.what = LODINGSUCEESE;
-                myHandler.sendMessage(msg);
-                //还是要用handler
-                rememberPassword(phoneNumS1, passwordS1);
+                }else {
+                    msg.what = LODINGSUCEESE;
+                    myHandler.sendMessage(msg);
+                    //还是要用handler
+                    rememberPassword(phoneNumS1, passwordS1);
+                }
             }
-            //添加跳转
-        }
-    };
+        };
+        //接收到服务端的数据
         myDbHelper = new DBHelper(this, myDBListener);
         login = (Button) findViewById(R.id.login);
         register = (Button) findViewById(R.id.registerTo);

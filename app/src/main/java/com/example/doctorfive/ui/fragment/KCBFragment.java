@@ -4,6 +4,7 @@ package com.example.doctorfive.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.example.doctorfive.db.DBHelper;
 import com.example.doctorfive.dormitoryfun.R;
 import com.example.doctorfive.entity.Student;
 import com.example.doctorfive.entity.Timetable;
+import com.example.doctorfive.weight.UtilsDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,6 +149,9 @@ public class KCBFragment extends Fragment implements View.OnClickListener {
         int id = view.getId();
         switch (id){
             case R.id.fragment_kcb_left:
+                Log.e("gongju","mmp");
+                UtilsDialog utilsDialog = UtilsDialog.getInstance();
+                utilsDialog.show(getActivity().getFragmentManager(),"xixix");
                 break;
             case R.id.fragment_kcb_title:
                 break;

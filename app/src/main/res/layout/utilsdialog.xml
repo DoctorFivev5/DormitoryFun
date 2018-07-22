@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableRow
+        >
+        <LinearLayout
+            android:id="@+id/sunnysport"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:id="@+id/sunnysport_img"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/sunnysport_text"
+                android:text="健步走"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cet"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            >
+            <ImageView
+                android:id="@+id/cet_img"
+                android:src="@mipmap/ic_launcher"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:id="@+id/cet_text"
+                android:text="四六级"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/library"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            >
+            <ImageView
+                android:id="@+id/library_img"
+                android:src="@mipmap/ic_launcher"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:id="@+id/library_text"
+                android:text="图书馆"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+    </TableRow>
+    <TableRow>
+        <LinearLayout
+            android:id="@+id/self_study"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            >
+            <ImageView
+                android:id="@+id/self_study_img"
+                android:src="@mipmap/ic_launcher"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:id="@+id/self_study_text"
+                android:text="自习室"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/school_calendar"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            >
+            <ImageView
+                android:id="@+id/school_calendar_img"
+                android:src="@mipmap/ic_launcher"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:id="@+id/school_calendar_text"
+                android:text="校历"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/school_mail"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:id="@+id/school_mail_img"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/school_mail_text"
+                android:text="校邮箱"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+    </TableRow>
+</TableLayout>

@@ -6,42 +6,98 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.doctorfive.ui.activity.DormitoryActivity">
+    tools:context="com.example.doctorfive.ui.activity.DormitoryActivity"
+    android:background="@drawable/dormitory_bg">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="我的宿舍"
-        android:textSize="24sp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp" />
+
 
     <com.example.doctorfive.weight.MoveImage
         android:id="@+id/user_icon_one"
         android:layout_width="60dp"
         android:layout_height="60dp"
-
-        android:scaleType="matrix"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="47dp" />
 
     <com.example.doctorfive.weight.MoveImage
         android:id="@+id/user_icon_two"
         android:layout_width="60dp"
         android:layout_height="60dp"
-
-        android:scaleType="matrix"/>
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/user_icon_one"
+        android:layout_marginEnd="18dp" />
 
     <com.example.doctorfive.weight.MoveImage
         android:id="@+id/user_icon_three"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_centerInParent="true"
-        android:scaleType="matrix"/>
+        android:layout_above="@+id/relativeLayout2"
+        android:layout_alignStart="@+id/user_icon_one"
+        android:layout_marginBottom="187dp" />
+
     <com.example.doctorfive.weight.MoveImage
         android:id="@+id/user_icon_four"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_alignStart="@+id/user_icon_two"
+        android:layout_alignTop="@+id/user_icon_three" />
 
-        android:scaleType="matrix"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/room_recyclerView_1"
+        android:layout_width="100dp"
+        android:layout_height="250dp"
+        android:layout_alignTop="@+id/user_icon_one"
+        android:layout_toEndOf="@+id/user_icon_one"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        >
+    </android.support.v7.widget.RecyclerView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/room_recyclerView_2"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/user_icon_two"
+        android:layout_toStartOf="@+id/user_icon_two"></android.support.v7.widget.RecyclerView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/room_recyclerView_3"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/user_icon_three"
+        android:layout_toEndOf="@+id/user_icon_three"></android.support.v7.widget.RecyclerView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/room_recyclerView_4"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/user_icon_four"
+        android:layout_toStartOf="@+id/user_icon_four"></android.support.v7.widget.RecyclerView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/relativeLayout2">
+
+        <EditText
+            android:id="@+id/message_editText"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/edit_bg"
+            android:selectAllOnFocus="true" />
+
+        <Button
+            android:id="@+id/send_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/message_editText"
+            android:layout_alignBottom="@+id/message_editText"
+            android:layout_toEndOf="@+id/message_editText"
+            android:text="发送" />
+    </RelativeLayout>
 </RelativeLayout>

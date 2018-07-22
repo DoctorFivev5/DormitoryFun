@@ -25,10 +25,18 @@ public class MessagAndObject implements Serializable {
     public void setResultCode(String resultCode) {
         this.resultCode = resultCode;
     }
-    public User getData() {
+    public Object getData() {
         return data;
     }
     public void setData(User data) {
         this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "MessagAndObject{" +
+                "resultCode='" + resultCode + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

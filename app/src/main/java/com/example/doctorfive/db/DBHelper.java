@@ -12,13 +12,20 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.example.doctorfive.base.MyApplication;
+import com.example.doctorfive.entity.Dormitory;
+import com.example.doctorfive.entity.DormitoryAndUser;
+import com.example.doctorfive.entity.DormitoryItem;
+import com.example.doctorfive.entity.DormitoryPwd;
 import com.example.doctorfive.entity.MessagAndObject;
+import com.example.doctorfive.entity.Power;
 import com.example.doctorfive.entity.Pwd;
 import com.example.doctorfive.entity.Schedule;
 import com.example.doctorfive.entity.Student;
 import com.example.doctorfive.entity.Timetable;
 import com.example.doctorfive.entity.User;
+import com.example.doctorfive.entity.UserMessage;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,9 +60,11 @@ public class DBHelper {
     private DBListener myDBListener;
     private DBOpenHelper helper;
     private SQLiteDatabase db;
-    private String servicesIP = "47.100.162.55";
-    //private String servicesIP = "192.168.42.119";
+    private String servicesIP = "47.100.162.55:8080";
+    //private String servicesIP = "192.168.42.212";
     //private String servicesIP = "192.168.1.102";
+
+
 
 
     static class MyHandler extends Handler {
@@ -195,7 +204,9 @@ public class DBHelper {
      */
     public void insert(User user) {
         if (haveLocalUser(user.getPhoneNum())){
+            Log.e("DB_insert1", user.getDormitoryID()+".0");
             update(user);
+            Log.e("DB_insert2", user.getDormitoryID()+".0");
         }else{
             ContentValues values = new ContentValues();
             values.put(USER_COLUMNS[1], user.getUsername());
@@ -308,6 +319,7 @@ public class DBHelper {
     }
 
 
+
     public String forgetPassword(User user){//查询手机号和学号是否匹配
         String password;
         String phoneNum = user.getPhoneNum();
@@ -320,7 +332,7 @@ public class DBHelper {
             return password;
         }else
             cursor.close();
-            return null;
+        return null;
     }
 
 
@@ -347,8 +359,15 @@ public class DBHelper {
      * @param jsonString json格式的String对象
      */
     public void okhttpUserLoginPost(String jsonString){
-        String url = "http://"+servicesIP+":8080/DormitoryFun/login";
+        String url = "http://"+servicesIP+"/DormitoryFun/login";
         OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
+        /*设置超时时间及缓存
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .cache(new Cache(sdcache.getAbsoluteFile(), cacheSize));
+        */
         RequestBody body = RequestBody.create(TYPE_OF_JSON, jsonString);
         Request request = new Request.Builder().post(body).url(url).build();
 
@@ -372,7 +391,7 @@ public class DBHelper {
      * @param jsonString json格式的String对象
      */
     private void okhttpUserRegisterPost(String jsonString) {
-        String url = "http://"+servicesIP+":8080/DormitoryFun/register";
+        String url = "http://"+servicesIP+"/DormitoryFun/register";
         OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
         RequestBody body = RequestBody.create(TYPE_OF_JSON, jsonString);
         Request request = new Request.Builder().post(body).url(url).build();
@@ -397,7 +416,7 @@ public class DBHelper {
      * @param jsonString json格式的String对象
      */
     private void okhttpStudentRegisterPost(String jsonString) {
-        String url = "http://"+servicesIP+":8080/DormitoryFun/studentImformation";
+        String url = "http://"+servicesIP+"/DormitoryFun/studentImformation";
         OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
         RequestBody body = RequestBody.create(TYPE_OF_JSON, jsonString);
         Request request = new Request.Builder().post(body).url(url).build();
@@ -418,7 +437,7 @@ public class DBHelper {
     }
 
     public void okhttpChangeUserImformationPost(User user){
-        String url = "http://"+servicesIP+":8080/DormitoryFun/changeImfor";
+        String url = "http://"+servicesIP+"/DormitoryFun/changeImfor";
         OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
         RequestBody body = RequestBody.create(TYPE_OF_JSON, JSON.toJSONString(user));
         Request request = new Request.Builder().post(body).url(url).build();
@@ -443,7 +462,7 @@ public class DBHelper {
                     return;
                 }
                 else if(messagAndObject.getResultCode().equals("1")) {
-                    myUser = messagAndObject.getData();
+                    myUser = (User) messagAndObject.getData();
                     myDBListener.doNetRequestChange(myUser);
                 }
             }
@@ -453,7 +472,7 @@ public class DBHelper {
 
 
     public void okhttpChangeUserIconPost(final User user, File icon){
-        String url = "http://"+servicesIP+":8080/DormitoryFun/changeUserIcon";
+        String url = "http://"+servicesIP+"/DormitoryFun/changeUserIcon";
         OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
         /*设置超时时间及缓存
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
@@ -483,16 +502,172 @@ public class DBHelper {
                 //byte bytes[] = response.body().bytes();
                 //String jsonStr = new String(bytes);
                 String jsonStr = response.body().string();
-                JSONObject jsonObject = JSONObject.parseObject(jsonStr);
-                JSON json = (JSON) JSON.toJSON(jsonObject);
-                MessagAndObject messagAndObject = JSON.toJavaObject(json, MessagAndObject.class);
+                Log.e("jsonStr",jsonStr);
+                MessagAndObject messagAndObject = JSON.parseObject(jsonStr, MessagAndObject.class);
+//                JSONObject jsonObject = JSONObject.parseObject(jsonStr);
+//                JSON json = (JSON) JSON.toJSON(jsonObject);
+//                MessagAndObject messagAndObject = JSON.toJavaObject(json, MessagAndObject.class);
+                Log.e("messagAndObject",messagAndObject.toString());
                 if (messagAndObject.getResultCode().equals("0")) {
                     return;
                 }
                 else if(messagAndObject.getResultCode().equals("1")) {
-                    myUser = messagAndObject.getData();
+                    myUser = (User) messagAndObject.getData();
                     myDBListener.doNetRequestChange(myUser);
                 }
+            }
+        });
+    }
+
+    public void okhttpCreateDormitoryPost(final DormitoryAndUser dormitoryAndUser){
+        String url = "http://"+servicesIP+"/DormitoryFun/addDormitory";
+        OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
+        RequestBody body = RequestBody.create(TYPE_OF_JSON, JSON.toJSONString(dormitoryAndUser));
+        Request request = new Request.Builder().post(body).url(url).build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("DBHelper","服务器凉了");
+                return;
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonStr = response.body().string();
+                Log.e("CreateDormitoryPost",jsonStr);
+                if (jsonStr.equals("0")) {
+                    myDBListener.doNetRequestChange(null);
+                }
+                else if(jsonStr.equals("1")) {
+                    myDBListener.doNetRequestChange(dormitoryAndUser);
+                }
+            }
+        });
+    }
+
+    public void okhttpSendUserMessage(final UserMessage userMessage) {
+        String url = "http://"+servicesIP+"/DormitoryFun/sendMessage";
+        OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
+        RequestBody body = RequestBody.create(TYPE_OF_JSON, JSON.toJSONString(userMessage));
+        Request request = new Request.Builder().post(body).url(url).build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("DBHelper","服务器凉了");
+                return;
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonStr = response.body().string();
+                if (jsonStr.equals("0")) {
+                    myDBListener.doNetRequestChange(null);
+                }
+                else if(jsonStr.equals("1")) {
+                    myDBListener.doNetRequestChange(userMessage);
+                }
+            }
+        });
+    }
+
+    public void okhttpQueryPower(final String dormitory) {
+        String url = "http://"+servicesIP+"/DormitoryFun/power";
+        OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
+        RequestBody body = RequestBody.create(TYPE_OF_JSON, JSON.toJSONString(dormitory));
+        Request request = new Request.Builder().post(body).url(url).build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("DBHelper","服务器凉了");
+                return;
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonStr = response.body().string();
+                Log.e("Power", jsonStr);
+                JSONObject jsonObject = JSONObject.parseObject(jsonStr);
+                JSON json = (JSON) JSON.toJSON(jsonObject);
+                Power power = JSON.toJavaObject(json, Power.class);
+                myDBListener.doNetRequestChange(power);
+            }
+        });
+    }
+
+    public void okhttpQueryDormitory() {
+        String url = "http://"+servicesIP+"/DormitoryFun/queryDormitory";
+        OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
+        Request request = new Request.Builder().get().url(url).build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("QueryDormitory","服务器凉了");
+                return;
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonStr = response.body().string();
+                Log.e("QueryDormitory", jsonStr);
+                List<DormitoryItem> dormitoryItems = JSON.parseObject(jsonStr, new TypeReference<List<DormitoryItem>>(){});
+                myDBListener.doNetRequestChange(dormitoryItems);
+            }
+        });
+    }
+
+    public void okhttpDormitoryPwd(final DormitoryPwd dormitoryPwd) {
+        String url = "http://"+servicesIP+"/DormitoryFun/checkDormitory";
+        OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
+        RequestBody body = RequestBody.create(TYPE_OF_JSON, JSON.toJSONString(dormitoryPwd));
+        Request request = new Request.Builder().post(body).url(url).build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("DormitoryPwd","服务器凉了");
+                return;
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonStr = response.body().string();
+                Log.e("DormitoryPwd0", jsonStr);
+                if (jsonStr.equals("0")) {
+                    myDBListener.doNetRequestChange(null);
+                    Log.e("DormitoryPwd1", jsonStr);
+                } else if(jsonStr.equals("1")) {
+                    myDBListener.doNetRequestChange(dormitoryPwd);
+                    Log.e("DormitoryPwd2", jsonStr);
+                }
+            }
+        });
+    }
+
+    public void okhttpQueryAllMessageFromDormitory(String phoneNum, String dormitoryID) {
+        UserMessage userMessage = new UserMessage();
+        userMessage.setMessage_from(phoneNum);
+        userMessage.setMessage_is_dormitory(dormitoryID);
+        String url = "http://"+servicesIP+"/DormitoryFun/queryMessageFromDormitory";
+        OkHttpClient okHttpClient = new OkHttpClient();//创建okhttp实例
+        RequestBody body = RequestBody.create(TYPE_OF_JSON, JSON.toJSONString(userMessage));
+        Request request = new Request.Builder().post(body).url(url).build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("DBHelper","服务器凉了");
+                return;
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonStr = response.body().string();
+                Log.e("MessageFromDormitory", jsonStr);
+                List<UserMessage> userMessageList = JSON.parseObject(jsonStr, new TypeReference<List<UserMessage>>(){});
+                myDBListener.doNetRequestChange(userMessageList);
             }
         });
     }
@@ -511,6 +686,7 @@ public class DBHelper {
         myUser = JSON.toJavaObject(json, User.class);
         //java.lang.ClassCastException: com.alibaba.fastjson.JSONObject cannot be cast to com.example.doctorfive.entity.User
         myDBListener.doNetRequestChange(myUser);
+
     }
 
     /**
@@ -532,11 +708,15 @@ public class DBHelper {
     }
 
 
+    public void fixHome(){
+
+    }
+
     /**
      * 外部调用DBHelper的网络操作 需要实现的回调接口
      */
     public interface DBListener {
-        void doNetRequestChange(User user);
+        void doNetRequestChange(Object object);
 
     }
 
@@ -755,13 +935,15 @@ public class DBHelper {
         if (cursor.moveToFirst()){
             String sql_2 = "update User set username=?, userIcon=?, stuNum=?, sex=?, email=?, school=?, autograph=?, state=?, dormitoryID=?  where phoneNum=?";
             db.execSQL(sql_2,new String[] {username, userIcon, stuNum, sex, email,school,autograph, String.valueOf(state), dormitoryID, phoneNum});
-            Log.e("DB",username+phoneNum+userIcon+stuNum+sex+email+school+autograph);
+            Log.e("DB_update",username+phoneNum+userIcon+stuNum+sex+email+school+autograph);
             cursor.close();
         }else {
-            Log.e("DBHelper_updata_user","emmm");
+            Log.e("DBHelper_updata_user","fail");
             cursor.close();
         }
     }
+
+
 
 
 }

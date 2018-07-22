@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.example.doctorfive.base.BaseActivity;
 import com.example.doctorfive.base.MyApplication;
+import com.example.doctorfive.db.DBHelper;
 import com.example.doctorfive.dormitoryfun.R;
 
 /**
@@ -15,6 +16,7 @@ import com.example.doctorfive.dormitoryfun.R;
  */
 public class FixHomeActivity extends BaseActivity {
 
+    DBHelper dbHelper = new DBHelper(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,7 @@ public class FixHomeActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(MyApplication.getContext(),"提交成功！",Toast.LENGTH_SHORT).show();
+                dbHelper.fixHome();
                 finish();
             }
         });

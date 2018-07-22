@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <TextView
+        android:text="宿舍号："
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/normal_size"
+        android:id="@+id/textView3"
+        />
+
+    <TextView
+        android:id="@+id/dialog_join_dormitory_num"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/dialog_join_dormitory_password"
+        android:layout_alignParentStart="true"
+        android:text="密    码："
+        android:textSize="@dimen/normal_size" />
+
+    <EditText
+        android:id="@+id/dialog_join_dormitory_password"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:layout_below="@+id/textView3"
+        android:layout_toEndOf="@+id/textView2"
+        android:background="@drawable/bg_edittext_normal"/>
+
+    <Button
+        android:id="@+id/dialog_join_dormitory_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_join_dormitory_password"
+        android:layout_marginStart="27dp"
+        android:layout_toEndOf="@+id/textView3"
+        android:text="加入" />
+
+</RelativeLayout>

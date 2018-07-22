@@ -42,7 +42,9 @@
 
         <activity android:name="com.example.doctorfive.ui.activity.ScheduleActivity" />
         <activity android:name="com.example.doctorfive.ui.activity.ScheduleDetailActivity" />
-        <activity android:name="com.example.doctorfive.ui.activity.DormitoryActivity" />
+        <activity
+            android:name="com.example.doctorfive.ui.activity.DormitoryActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name="com.example.doctorfive.ui.activity.PowerActivity" />
         <activity android:name="com.example.doctorfive.ui.activity.MoneyActivity" />
         <activity android:name="com.example.doctorfive.ui.activity.FileActivity" />
@@ -51,7 +53,12 @@
         <activity android:name="com.example.doctorfive.ui.activity.SettingActivity" />
         <activity android:name="com.example.doctorfive.ui.activity.SelectCircleActivity" />
         <activity android:name="com.example.doctorfive.ui.activity.FirstStartShowActivity" />
-        <activity android:name="com.example.doctorfive.ui.activity.DayCourseActivity"></activity>
+        <activity android:name="com.example.doctorfive.ui.activity.DayCourseActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.BindingsDormitoryActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.CreateDormitoryActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.QueryDormitoryActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.WebActivity" />
+        <activity android:name="com.example.doctorfive.ui.activity.JoinDormitoryActivity"></activity>
     </application>
 
 </manifest>

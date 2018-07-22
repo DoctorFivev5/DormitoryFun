@@ -303,7 +303,9 @@
         android:background="@color/normallinecolor"
         android:id="@+id/view8" />
 
-    <View
+
+    <!--
+     <View
         android:id="@+id/view9"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -381,6 +383,6 @@
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
-
+    -->
 
 </RelativeLayout>

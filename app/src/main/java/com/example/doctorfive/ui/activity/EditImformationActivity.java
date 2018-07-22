@@ -31,8 +31,8 @@ public class EditImformationActivity extends BaseActivity {
     private String sexText;//保存选择的性别
     private EditText school;
     private EditText email;
-    private EditText buildingNum;
-    private EditText dormitoryNum;
+    //private EditText buildingNum;
+    //private EditText dormitoryNum;
 
     private User myUser;
     private LoadingDialog loadingDialog;
@@ -78,7 +78,7 @@ public class EditImformationActivity extends BaseActivity {
                 myUser.setEmail(email.getText().toString());
                 myUser.setAutograph(autograph.getText().toString());
                 //需要添加对dormitoryID进行格式判断
-                myUser.setDormitoryID(buildingNum.getText()+"-"+dormitoryNum.getText());
+                //myUser.setDormitoryID(buildingNum.getText()+"#"+dormitoryNum.getText());
                 myDBHelper.okhttpChangeUserImformationPost(myUser);
                 loadingDialog.show();
             }
@@ -107,7 +107,7 @@ public class EditImformationActivity extends BaseActivity {
     private void initView() {
         DBListener = new DBHelper.DBListener() {
             @Override
-            public void doNetRequestChange(User user) {
+            public void doNetRequestChange(Object object) {
                 Message message = new Message();
                 Log.e("Edit-DBListener","mmp");
                 message.what = 1;
@@ -127,8 +127,8 @@ public class EditImformationActivity extends BaseActivity {
         sex = (Spinner) findViewById(R.id.sextext);
         school = (EditText) findViewById(R.id.schooltext);
         email = (EditText) findViewById(R.id.emailtext);
-        buildingNum = (EditText) findViewById(R.id.building_num);
-        dormitoryNum = (EditText) findViewById(R.id.dormitory_num);
+        //buildingNum = (EditText) findViewById(R.id.building_num);
+        //dormitoryNum = (EditText) findViewById(R.id.dormitory_num);
     }
 
     private void initDialog() {

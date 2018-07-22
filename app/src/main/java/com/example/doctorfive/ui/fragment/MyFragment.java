@@ -23,6 +23,7 @@ import com.example.doctorfive.db.DBHelper;
 import com.example.doctorfive.dormitoryfun.R;
 import com.example.doctorfive.entity.Optionitem;
 import com.example.doctorfive.entity.User;
+import com.example.doctorfive.ui.activity.CreateDormitoryActivity;
 import com.example.doctorfive.ui.activity.DormitoryActivity;
 import com.example.doctorfive.ui.activity.FileActivity;
 import com.example.doctorfive.ui.activity.FixHomeActivity;
@@ -92,7 +93,8 @@ public class MyFragment extends Fragment implements View.OnClickListener,MyRecyc
                 .into(userIcon);
     }
 
-    private void initView(View view) {//初始化控件
+    //初始化控件
+    private void initView(View view) {
         setting = (TextView) view.findViewById(R.id.fragment_my_setting);
         userShow = view.findViewById(R.id.user_show);
         userIcon = view.findViewById(R.id.user_icon);
@@ -121,10 +123,10 @@ public class MyFragment extends Fragment implements View.OnClickListener,MyRecyc
         optionitemList.add(optionitem);
         Optionitem optionitem1 = new Optionitem("电费",R.drawable.electric);
         optionitemList.add(optionitem1);
-        Optionitem optionitem2 = new Optionitem("寝费",R.drawable.money);
-        optionitemList.add(optionitem2);
-        Optionitem optionitem3 = new Optionitem("我的文件",R.drawable.file);
-        optionitemList.add(optionitem3);
+//        Optionitem optionitem2 = new Optionitem("寝费",R.drawable.money);
+//        optionitemList.add(optionitem2);
+//        Optionitem optionitem3 = new Optionitem("我的文件",R.drawable.file);
+//        optionitemList.add(optionitem3);
         Optionitem optionitem4 = new Optionitem("在线报修",R.drawable.fix_home);
         optionitemList.add(optionitem4);
     }
@@ -153,23 +155,31 @@ public class MyFragment extends Fragment implements View.OnClickListener,MyRecyc
     public void onItemClick(View view, int position) {
         switch (position) {
             case 0:
-                Intent intent = new Intent(getContext(), DormitoryActivity.class);
-                intent.putExtra("myUser", myUser);
-                getContext().startActivity(intent);
+                Log.e("myUser.getDormitoryID()", myUser.getDormitoryID()+"000");
+                if(myUser.getDormitoryID()!=null){
+                    Intent intent = new Intent(getContext(), DormitoryActivity.class);
+                    intent.putExtra("myUser", myUser);
+                    getContext().startActivity(intent);
+                }else {
+                    Intent intent = new Intent(getContext(), CreateDormitoryActivity.class);
+                    intent.putExtra("myUser", myUser);
+                    getContext().startActivity(intent);
+                }
                 break;
             case 1:
                 Intent intent1 = new Intent(getContext(), PowerActivity.class);
+                intent1.putExtra("myUser", myUser);
                 getContext().startActivity(intent1);
                 break;
+//            case 2:
+//                Intent intent2 = new Intent(getContext(), MoneyActivity.class);
+//                getContext().startActivity(intent2);
+//                break;
+//            case 3:
+//                Intent intent3 = new Intent(getContext(), FileActivity.class);
+//                getContext().startActivity(intent3);
+//                break;
             case 2:
-                Intent intent2 = new Intent(getContext(), MoneyActivity.class);
-                getContext().startActivity(intent2);
-                break;
-            case 3:
-                Intent intent3 = new Intent(getContext(), FileActivity.class);
-                getContext().startActivity(intent3);
-                break;
-            case 4:
                 Intent intent4 = new Intent(getContext(), FixHomeActivity.class);
                 getContext().startActivity(intent4);
                 break;

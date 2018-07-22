@@ -125,4 +125,21 @@ public class User implements Serializable {
     public String printUser(){
         return getId()+getUsername()+getUserIcon()+getAutograph()+getDormitoryID()+getEmail()+getPhoneNum()+getSchool()+getSex()+getStuNum()+getState();
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", phoneNum='" + phoneNum + '\'' +
+                ", username='" + username + '\'' +
+                ", sex='" + sex + '\'' +
+                ", email='" + email + '\'' +
+                ", school='" + school + '\'' +
+                ", userIcon='" + userIcon + '\'' +
+                ", stuNum='" + stuNum + '\'' +
+                ", state=" + state +
+                ", dormitoryID='" + dormitoryID + '\'' +
+                ", autograph='" + autograph + '\'' +
+                '}';
+    }
 }
