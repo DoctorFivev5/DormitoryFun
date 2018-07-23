@@ -77,6 +77,7 @@ public class SelectCircleActivity extends BaseActivity {
             }
         }else if (code==2){
             bitmap = BitmapFactory.decodeFile(imageFromPath.getPath());
+            //
         }
 
         /*
