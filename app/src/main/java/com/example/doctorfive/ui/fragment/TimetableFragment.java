@@ -188,8 +188,8 @@ public class TimetableFragment extends Fragment implements View.OnClickListener 
                 .add("__LASTFOCUS","")
                 .add("__VIEWSTATE",((MesValue) mesValue).get__VIEWSTATE() )
                 .add("__EVENTVALIDATION",((MesValue) mesValue).get__EVENTVALIDATION() )
-                .add("rblUserType", "User")
-                .add("ddlCollege","180     ")
+                .add("rblUserType", "Student")
+                .add("ddlCollege","68000   ")
                 .add("StuNum",	stuNumS)
                 .add("TeaNum","")
                 .add("Password",stuPasswordS)
@@ -297,7 +297,7 @@ public class TimetableFragment extends Fragment implements View.OnClickListener 
                 .add("__EVENTARGUMENT","")
                 .add("__VIEWSTATE",((MesValue) mesValue).get__VIEWSTATE())
                 .add("__EVENTVALIDATION", ((MesValue) mesValue).get__EVENTVALIDATION())//((MesValue) mesValue).get__EVENTVALIDATION()
-                .add("_ctl1:ddlSterm", "2018/3/1 0:00:00")//2017/9/1 0:00:00
+                .add("_ctl1:ddlSterm", "2018/9/1 0:00:00")//2018/3/1 0:00:00
                 .add("_ctl1:btnSearch","确定")
                 .build();
         request = new Request.Builder().post(formBody).url(kcbUrl).build();

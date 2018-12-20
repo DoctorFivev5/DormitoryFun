@@ -99,13 +99,13 @@ public class KCBFragment extends Fragment implements View.OnClickListener {
         String number = student.getStuNum().substring(0,4);
         Log.e("init",number);
         if (number.equals("2015")){
-            team.setText("大三第二学期");
-        }else if (number.equals("2014")){
-            team.setText("大四第二学期");
+            team.setText("大四第一学期");
         }else if (number.equals("2016")){
-            team.setText("大二第二学期");
+            team.setText("大三第一学期");
         }else if (number.equals("2017")){
-            team.setText("大一第二学期");
+            team.setText("大二第一学期");
+        }else if (number.equals("2018")){
+            team.setText("大一第一学期");
         }
     }
 

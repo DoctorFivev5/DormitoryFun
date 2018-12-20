@@ -16,11 +16,12 @@ import com.example.doctorfive.dormitoryfun.R;
  */
 public class FixHomeActivity extends BaseActivity {
 
-    DBHelper dbHelper = new DBHelper(this);
+    DBHelper dbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fix_home);
+        dbHelper = new DBHelper(this);
         View returntext = findViewById(R.id.returntext);
         returntext.setOnClickListener(new View.OnClickListener() {
             @Override

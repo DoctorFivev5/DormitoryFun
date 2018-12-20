@@ -107,19 +107,19 @@ public class UtilsDialog extends DialogFragment implements View.OnClickListener{
                 break;
             case R.id.self_study:
                 Intent intent4 = new Intent(getContext(), WebActivity.class);
-                intent4.putExtra("url","http://zwfp.jxnu.jadl.net/");
+                intent4.putExtra("url","https://jxnu.huitu.zhishulib.com/#!/User/Index/login?forward=/Space/Category/list?category_id=591");
                 startActivity(intent4);
                 this.dismiss();
                 break;
             case R.id.school_calendar:
                 Intent intent5 = new Intent(getContext(), WebActivity.class);
-                intent5.putExtra("url","http://www.jxnu.edu.cn/s/2/t/690/94/67/info103527.htm");
+                intent5.putExtra("url","http://jwc.jxnu.edu.cn/Jxzl_20180901.pdf");
                 startActivity(intent5);
                 this.dismiss();
                 break;
             case R.id.school_mail:
                 Intent intent6 = new Intent(getContext(), WebActivity.class);
-                intent6.putExtra("url","http://mail.jxnu.edu.cn/mobile/?q=login");
+                intent6.putExtra("url","https://mail.jxnu.edu.cn/");
                 startActivity(intent6);
                 this.dismiss();
                 break;
